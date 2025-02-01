@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://biu5bs6cpi32d"]
+
+[ext_resource type="Script" path="res://scripts/platformer_controller.gd" id="1_gdhld"]
+[ext_resource type="Texture2D" uid="uid://b55rb2kqpdnt0" path="res://assets/textures/player.png" id="2_4l7gt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_slxam"]
+size = Vector2(6, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kj548"]
+atlas = ExtResource("2_4l7gt")
+region = Rect2(0, 0, 9, 9)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_gdhld")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3.5)
+shape = SubResource("RectangleShape2D_slxam")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-5, -9)
+texture = SubResource("AtlasTexture_kj548")
+centered = false
