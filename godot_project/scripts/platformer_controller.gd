@@ -1,6 +1,5 @@
-extends CharacterBody2D
+class_name PlatformerController2D extends CharacterBody2D
 
-class_name PlatformerController2D
 
 signal jumped(is_ground_jump: bool)
 signal hit_ground()
@@ -15,8 +14,8 @@ signal hit_ground()
 @export var input_jump : String = "jump"
 
 
-const DEFAULT_MAX_JUMP_HEIGHT = 150
-const DEFAULT_MIN_JUMP_HEIGHT = 60
+const DEFAULT_MAX_JUMP_HEIGHT = 30
+const DEFAULT_MIN_JUMP_HEIGHT = 15
 const DEFAULT_DOUBLE_JUMP_HEIGHT = 100
 const DEFAULT_JUMP_DURATION = 0.3
 
@@ -74,9 +73,9 @@ var _jump_duration: float = DEFAULT_JUMP_DURATION
 ## Multiplies the gravity by this while falling.
 @export var falling_gravity_multiplier = 1.5
 ## Amount of jumps allowed before needing to touch the ground again. Set to 2 for double jump.
-@export var max_jump_amount = 1
-@export var max_acceleration = 10000
-@export var friction = 20
+@export var max_jump_amount = 0
+@export var max_acceleration = 2500
+@export var friction = 80
 @export var can_hold_jump : bool = false
 ## You can still jump this many seconds after falling off a ledge.
 @export var coyote_time : float = 0.1
