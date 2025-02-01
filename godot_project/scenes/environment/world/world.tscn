@@ -1,48 +1,48 @@
-[gd_scene load_steps=7 format=4 uid="uid://cks5b4mtsm7ju"]
+[gd_scene load_steps=5 format=4 uid="uid://cks5b4mtsm7ju"]
 
 [ext_resource type="PackedScene" uid="uid://biu5bs6cpi32d" path="res://scenes/entities/player/player.tscn" id="1_wieyv"]
 [ext_resource type="Texture2D" uid="uid://8joyvm1w8cgn" path="res://assets/textures/tiles.png" id="2_a414y"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wavsx"]
-size = Vector2(5, 21)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3rhi4"]
-size = Vector2(112, 5)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s8425"]
 texture = ExtResource("2_a414y")
 texture_region_size = Vector2i(8, 8)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 1:1/0 = 0
 1:2/0 = 0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 0:2/0 = 0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 2:2/0 = 0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+3:1/0 = 0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+4:1/0 = 0
+4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+4:0/0 = 0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 
 [sub_resource type="TileSet" id="TileSet_tosl8"]
 tile_size = Vector2i(8, 8)
+physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_s8425")
 
 [node name="World" type="Node2D"]
 
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAIAAAABAAAAAAABAAIAAAACAAAAAAABAAIAAAADAAAAAAABAAIAAAAEAAAAAAABAAIAAAAFAAAAAAABAAIAAAAGAAAAAAABAAIAAAAHAAAAAAABAAIAAAAIAAAAAAABAAIAAAAJAAAAAAABAAIAAAAKAAAAAAABAAIAAAALAAAAAAABAAIAAAAMAAAAAAABAAIAAAANAAAAAAABAAIAAAAOAP//AAACAAEAAAAOAP7/AAACAAEAAAAOAAAAAAACAAIAAAAOAP3/AAADAAAAAAAPAP3/AAABAAIAAAAQAP3/AAABAAIAAAARAP3/AAABAAIAAAASAP3/AAAEAAAAAAASAP7/AAAAAAEAAAATAP//AAABAAIAAAAUAP//AAABAAIAAAASAP//AAAAAAIAAAAVAP//AAABAAIAAAAWAP//AAABAAIAAAAXAP//AAABAAIAAAAYAP//AAABAAIAAAAZAP//AAABAAIAAAAaAP7/AAACAAEAAAAaAP3/AAACAAEAAAAaAPz/AAACAAEAAAAaAPv/AAACAAEAAAAaAPr/AAACAAEAAAAaAPn/AAACAAEAAAAaAPj/AAACAAEAAAAaAPf/AAACAAEAAAAZAPb/AAABAAAAAAAYAPb/AAABAAAAAAAXAPb/AAABAAAAAAAWAPb/AAABAAAAAAAVAPb/AAABAAAAAAAUAPb/AAABAAAAAAATAPb/AAABAAAAAAASAPb/AAABAAAAAAARAPb/AAABAAAAAAAQAPb/AAABAAAAAAAPAPb/AAABAAAAAAAOAPb/AAABAAAAAAANAPb/AAABAAAAAAAMAPb/AAABAAAAAAALAPb/AAABAAAAAAAKAPb/AAABAAAAAAAJAPb/AAABAAAAAAAIAPb/AAABAAAAAAAHAPb/AAABAAAAAAAGAPb/AAABAAAAAAAFAPb/AAABAAAAAAAEAPb/AAABAAAAAAADAPb/AAABAAAAAAACAPb/AAABAAAAAAABAPb/AAABAAAAAAAAAPb/AAABAAAAAAD///f/AAAAAAEAAAD///j/AAAAAAEAAAD///n/AAAAAAEAAAD///r/AAAAAAEAAAD///v/AAAAAAEAAAD///z/AAAAAAEAAAD///3/AAAAAAEAAAD///7/AAAAAAEAAAD/////AAAAAAEAAAD//wAAAAAAAAIAAAD///b/AAAAAAAAAAAaAPb/AAACAAAAAAAaAP//AAACAAIAAAA=")
+tile_set = SubResource("TileSet_tosl8")
+
 [node name="Player" parent="." instance=ExtResource("1_wieyv")]
 position = Vector2(29, -45)
 can_hold_jump = true
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(0, 5)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(114.5, -10.5)
-shape = SubResource("RectangleShape2D_wavsx")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(56, -2.5)
-shape = SubResource("RectangleShape2D_3rhi4")
-
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAAAAAAAAAABAAIAAAABAAAAAAABAAIAAAACAAAAAAABAAIAAAADAAAAAAABAAIAAAAEAAAAAAABAAIAAAAFAAAAAAABAAIAAAAGAAAAAAABAAIAAAAHAAAAAAABAAIAAAAIAAAAAAABAAIAAAAJAAAAAAABAAIAAAAKAAAAAAABAAIAAAALAAAAAAABAAIAAAAMAAAAAAABAAIAAAANAAAAAAABAAIAAAAOAP//AAACAAEAAAAOAP7/AAACAAEAAAAOAAAAAAACAAIAAAA=")
-tile_set = SubResource("TileSet_tosl8")
