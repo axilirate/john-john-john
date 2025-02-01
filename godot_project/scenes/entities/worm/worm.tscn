@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6axgce7b6gm0"]
+
+[ext_resource type="Script" path="res://scenes/entities/worm/worm.gd" id="1_apbu5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yl5ut"]
+size = Vector2(8, 8)
+
+[node name="Worm" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_apbu5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4, -4)
+shape = SubResource("RectangleShape2D_yl5ut")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_top = -8.0
+offset_right = 8.0
+color = Color(1, 0.29, 0.301833, 1)
