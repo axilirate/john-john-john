@@ -3,12 +3,13 @@ class_name Worm extends CharacterBody2D
 @export var ground_detection_area: Area2D
 @export var body_line: Line2D
 
-@export var segment_length: int = 3
-@export var points: int = 10
+@export var segment_length: int = 7
+@export var points: int = 8
 
 
 @onready var in_ground: bool = is_in_ground()
 
+var sprites: Array[Sprite2D] = []
 
 var acceleration: float = 0.01
 var gravity: float = 4.5
@@ -19,9 +20,11 @@ var target_dir: Vector2
 
 
 func _ready() -> void:
-	body_line.points.clear()
+	body_line.clear_points()
+	
 	for point in points:
 		body_line.add_point(Vector2.ZERO, point)
+		sprites.push_back(create_sprite())
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
@@ -48,8 +51,10 @@ func _physics_process(delta: float) -> void:
 
 
 
+
 func _process_body_line() -> void:
 	body_line.set_point_position(0, global_position)
+	sprites[0].global_position = global_position
 	
 	for idx in body_line.get_point_count():
 		if idx == 0:
@@ -60,8 +65,8 @@ func _process_body_line() -> void:
 		var new_point_pos: Vector2 = constrain_distance(curr_point_pos, last_point_pos, segment_length)
 		
 		body_line.set_point_position(idx, new_point_pos)
-		
-		#sprite.look_at(sprite.global_position + target_dir)
+		sprites[idx].global_position = new_point_pos
+
 
 
 
@@ -80,6 +85,17 @@ func _process_velocity(delta: float) -> void:
 
 
 
+
+
+func create_sprite() -> Sprite2D:
+	var sprite = Sprite2D.new()
+	sprite.modulate = Color.RED
+	sprite.texture = AtlasTexture.new()
+	(sprite.texture as AtlasTexture).atlas = preload("res://assets/textures/player.png")
+	(sprite.texture as AtlasTexture).region = Rect2(0, 0, 11, 9)
+	add_child(sprite)
+	
+	return sprite
 
 
 
