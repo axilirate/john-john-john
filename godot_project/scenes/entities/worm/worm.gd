@@ -3,8 +3,8 @@ class_name Worm extends CharacterBody2D
 @export var ground_detection_area: Area2D
 @export var body_line: Line2D
 
-@export var segment_length: int = 3
-@export var points: int = 14
+@export var segment_length: int = 6
+@export var points: int = 7
 
 
 @onready var in_ground: bool = is_in_ground()
@@ -91,10 +91,10 @@ func create_sprite(idx: int) -> Sprite2D:
 	var sprite = Sprite2D.new()
 	sprite.texture = AtlasTexture.new()
 	(sprite.texture as AtlasTexture).atlas = preload("res://assets/textures/worm.png")
-	(sprite.texture as AtlasTexture).region.size = Vector2(10, 10)
+	(sprite.texture as AtlasTexture).region.size = Vector2(12, 12)
 	
 	sprite.modulate = Color.DARK_RED
-	(sprite.texture as AtlasTexture).region.position.x = 10
+	(sprite.texture as AtlasTexture).region.position.x = 12
 	
 	if idx == points - 1:
 		(sprite.texture as AtlasTexture).region.position.x = 0
