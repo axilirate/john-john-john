@@ -14,6 +14,7 @@ class_name Player extends CharacterBody2D
 
 
 var jump_force: float = 125
+
 var friction: float = 5
 var gravity: float = 5
 var speed: float = 5
@@ -40,24 +41,31 @@ func _physics_process(delta: float) -> void:
 
 
 func _process_velocity(delta: float) -> void:
-	force.y += gravity
+	
+	
 	
 	
 	if is_on_floor():
-		force.y = -force.y * 0.5
+		var new_force: float = 0.0
 		
-		if abs(force.y) < gravity + 45:
-			force.y = 0
+		if Input.is_action_pressed("jump"):
+			new_force = min(-(abs(force.y * 0.75) - gravity), -jump_force)
 		
-		if Input.is_action_just_pressed("jump"):
-			force.y = -jump_force
+		
+		force.y = new_force
+		
+	else:
+		force.y += gravity
+	
+	
+	
+	if is_on_ceiling():
+		force.y = abs(force.y)
 	
 	
 	if is_on_wall():
-		force.x = -force.x
+		force.x = -force.x * 0.5
 	
-	
-
 	
 	
 	force.x += get_horizontal_input() * speed
