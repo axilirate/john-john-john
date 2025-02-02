@@ -41,6 +41,11 @@ jump={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Entities"
+3d_physics/layer_2="Tiles"
+
 [physics]
 
 common/physics_jitter_fix=0.0
