@@ -27,7 +27,7 @@ func _physics_process(delta: float) -> void:
 		sprite.global_position.x = round(sprite.global_position.x)
 	
 	
-	camera_target_pos = lerp(camera_target_pos, global_position, delta * 10)
+	camera_target_pos = lerp(camera_target_pos, global_position + Vector2(0, -25), delta * 10)
 	camera.global_position = camera_target_pos
 	
 	_process_sprite()
