@@ -76,12 +76,12 @@ _data = {
 "run": SubResource("Animation_oie1p")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_slxam"]
-size = Vector2(6, 7)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_kj548"]
 atlas = ExtResource("2_4l7gt")
 region = Rect2(0, 0, 9, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vcw8e"]
+size = Vector2(6, 7)
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("camera", "sprite")]
 physics_interpolation_mode = 1
@@ -96,18 +96,18 @@ libraries = {
 "": SubResource("AnimationLibrary_vtp8g")
 }
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0.596078, 0.0509804, 1)
+position = Vector2(-5, -9)
+texture = SubResource("AtlasTexture_kj548")
+centered = false
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, -3.5)
-shape = SubResource("RectangleShape2D_slxam")
+shape = SubResource("RectangleShape2D_vcw8e")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 top_level = true
 zoom = Vector2(4, 4)
 position_smoothing_speed = 10.0
 rotation_smoothing_speed = 1.0
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 0.596078, 0.0509804, 1)
-position = Vector2(-6, -9)
-texture = SubResource("AtlasTexture_kj548")
-centered = false

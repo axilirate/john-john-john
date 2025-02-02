@@ -1,0 +1,1 @@
+class_name OneWayStaticBody extends StaticBody2D
