@@ -1,6 +1,9 @@
 class_name Player extends CharacterBody2D
 
 
+const TIME_TO_MAX_HEIGHT: float = 1
+const MAX_HEIGHT: float = 21
+
 
 @onready var camera_target_pos: Vector2 = global_position
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
@@ -9,24 +12,6 @@ class_name Player extends CharacterBody2D
 @export_category("Nodes")
 @export var camera: Camera2D
 @export var sprite: Sprite2D
-
-
-
-
-var jump_force: float = 125
-
-var friction: float = 5
-var gravity: float = 5
-var speed: float = 5
-
-
-var jump_duration: float = 1
-var jump_height: float = 1
-
-
-var force: Vector2 = Vector2.ZERO
-
-
 
 
 
@@ -42,38 +27,6 @@ func _physics_process(delta: float) -> void:
 
 func _process_velocity(delta: float) -> void:
 	
-	
-	
-	
-	if is_on_floor():
-		var new_force: float = 0.0
-		
-		if Input.is_action_pressed("jump"):
-			new_force = min(-(abs(force.y * 0.75) - gravity), -jump_force)
-		
-		
-		force.y = new_force
-		
-	else:
-		force.y += gravity
-	
-	
-	
-	if is_on_ceiling():
-		force.y = abs(force.y)
-	
-	
-	if is_on_wall():
-		force.x = -force.x * 0.5
-	
-	
-	
-	force.x += get_horizontal_input() * speed
-	
-	force.x = lerp(force.x, 0.0, delta * friction)
-	
-	
-	velocity = force
 	move_and_slide()
 
 
@@ -86,8 +39,6 @@ func _process_camera(delta: float) -> void:
 
 
 
-
-
 func _process_sprite() -> void:
 	animation_player.play(get_target_animation())
 	
@@ -96,14 +47,14 @@ func _process_sprite() -> void:
 	if is_on_floor():
 		sprite.global_position.y = round(sprite.global_position.y)
 	
-	if is_equal_approx(force.x, 0.0):
+	if is_equal_approx(velocity.x, 0.0):
 		sprite.global_position.x = round(sprite.global_position.x)
 	
-	if force.x > 0.0:
+	if velocity.x > 0.0:
 		sprite.flip_h = false
 		sprite.offset.x = 0
 	
-	if force.x < 0.0:
+	if velocity.x < 0.0:
 		sprite.flip_h = true
 		sprite.offset.x = 1
 
@@ -111,22 +62,14 @@ func _process_sprite() -> void:
 
 
 
-
-
 func get_target_animation() -> String:
-	if not is_on_ground():
+	if not is_on_floor():
 		return "air"
 	
-	if not is_equal_approx(force.x, 0.0) and not get_horizontal_input() == 0:
+	if not is_equal_approx(velocity.x, 0.0) and not get_horizontal_input() == 0:
 		return "run"
 	
 	return "idle"
-
-
-
-
-func is_on_ground() -> bool:
-	return is_on_floor() and is_equal_approx(force.y, 0.0)
 
 
 
