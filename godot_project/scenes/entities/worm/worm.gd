@@ -41,7 +41,7 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not is_instance_valid(World.player):
+	if World.player == null:
 		return
 	
 	_process_velocity(delta)

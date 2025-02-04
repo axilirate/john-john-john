@@ -1,8 +1,6 @@
-class_name Player extends CharacterBody2D
+class_name Player extends CharacterController
 
 
-const TIME_TO_MAX_HEIGHT: float = 1
-const MAX_HEIGHT: float = 21
 
 
 @onready var camera_target_pos: Vector2 = global_position
@@ -10,25 +8,23 @@ const MAX_HEIGHT: float = 21
 
 
 @export_category("Nodes")
+@export var pickable_target_marker: Marker2D
 @export var camera: Camera2D
 @export var sprite: Sprite2D
+
+var flipped: bool = false
 
 
 
 
 func _physics_process(delta: float) -> void:
-	_process_velocity(delta)
+	super._physics_process(delta)
 	_process_camera(delta)
-	_process_sprite()
-
-
-
-
-
-func _process_velocity(delta: float) -> void:
+	_process_look_dir()
 	
-	move_and_slide()
-
+	
+	_procss_pickable_target_marker()
+	_process_sprite()
 
 
 
@@ -36,6 +32,24 @@ func _process_velocity(delta: float) -> void:
 func _process_camera(delta: float) -> void:
 	camera_target_pos = lerp(camera_target_pos, global_position + Vector2(0, -25), delta * 10)
 	camera.global_position = camera_target_pos
+
+
+
+func _process_look_dir() -> void:
+	if velocity.x > 0.0:
+		flipped = false
+	
+	if velocity.x < 0.0:
+		flipped = true
+
+
+
+
+func _procss_pickable_target_marker() -> void:
+	pickable_target_marker.position.x = -5
+	
+	if flipped:
+		pickable_target_marker.position.x = 5
 
 
 
@@ -50,13 +64,12 @@ func _process_sprite() -> void:
 	if is_equal_approx(velocity.x, 0.0):
 		sprite.global_position.x = round(sprite.global_position.x)
 	
-	if velocity.x > 0.0:
-		sprite.flip_h = false
-		sprite.offset.x = 0
+	sprite.flip_h = flipped
+	sprite.offset.x = 0
 	
-	if velocity.x < 0.0:
-		sprite.flip_h = true
+	if flipped:
 		sprite.offset.x = 1
+
 
 
 
@@ -70,15 +83,3 @@ func get_target_animation() -> String:
 		return "run"
 	
 	return "idle"
-
-
-
-
-func get_horizontal_input() -> int:
-	if Input.is_action_pressed("move_right"):
-		return 1
-	
-	if Input.is_action_pressed("move_left"):
-		return -1
-	
-	return 0

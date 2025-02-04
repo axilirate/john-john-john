@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cic3vr3sl5rjs"]
+
+[ext_resource type="Script" path="res://scenes/entities/pickable_item/pickable_item.gd" id="1_4a8sb"]
+[ext_resource type="Texture2D" uid="uid://bmmqcb4a1kyen" path="res://assets/textures/key.png" id="1_lw5t1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y834s"]
+size = Vector2(10, 6)
+
+[node name="PickableItem" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_4a8sb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_y834s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_lw5t1")

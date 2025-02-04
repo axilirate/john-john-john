@@ -15,6 +15,14 @@ run/main_scene="res://scenes/environment/world/world.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 
+[autoload]
+
+BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg")
+
 [file_customization]
 
 folder_colors={
