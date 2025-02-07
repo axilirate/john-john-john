@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=4 uid="uid://dyxsil0lx81ix"]
+[gd_scene load_steps=10 format=4 uid="uid://dyxsil0lx81ix"]
 
 [ext_resource type="Script" path="res://scripts/nodes/one_way_static_body.gd" id="1_3gr1u"]
 [ext_resource type="Texture2D" uid="uid://8joyvm1w8cgn" path="res://assets/textures/tiles.png" id="1_wm03x"]
 [ext_resource type="PackedScene" uid="uid://c6axgce7b6gm0" path="res://scenes/entities/worm/worm.tscn" id="2_13tkk"]
 [ext_resource type="PackedScene" uid="uid://cic3vr3sl5rjs" path="res://scenes/entities/pickable_item/pickable_item.tscn" id="4_0a42r"]
 [ext_resource type="PackedScene" uid="uid://cms80ckviniis" path="res://scenes/parts/doorway/doorway.tscn" id="5_ra2qs"]
+[ext_resource type="PackedScene" uid="uid://credwq7t1o4w3" path="res://scenes/entities/npc/npc.tscn" id="6_ccdhq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vyb25"]
 size = Vector2(24, 1)
@@ -499,5 +500,9 @@ tile_set = SubResource("TileSet_oojr2")
 position = Vector2(70, -39)
 
 [node name="DoorA" parent="." instance=ExtResource("5_ra2qs")]
+visible = false
 z_index = -1
 position = Vector2(50, -56)
+
+[node name="NPC" parent="." instance=ExtResource("6_ccdhq")]
+position = Vector2(42, -56)
