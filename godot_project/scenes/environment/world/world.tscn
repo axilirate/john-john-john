@@ -1,13 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://cks5b4mtsm7ju"]
+[gd_scene load_steps=3 format=3 uid="uid://cks5b4mtsm7ju"]
 
 [ext_resource type="Script" path="res://scenes/environment/world/world.gd" id="1_2mthh"]
-[ext_resource type="PackedScene" uid="uid://biu5bs6cpi32d" path="res://scenes/entities/player/player.tscn" id="1_wieyv"]
 [ext_resource type="PackedScene" uid="uid://dyxsil0lx81ix" path="res://scenes/zones/world_zone/world_zone.tscn" id="2_5g3sr"]
 
-[node name="World" type="Node2D"]
+[node name="World" type="Node2D" node_paths=PackedStringArray("player_spawn")]
 script = ExtResource("1_2mthh")
+player_spawn = NodePath("PlayerSpawn")
 
-[node name="Player" parent="." instance=ExtResource("1_wieyv")]
-position = Vector2(9, -30)
+[node name="PlayerSpawn" type="Marker2D" parent="."]
+position = Vector2(7, -30)
 
 [node name="WorldZone" parent="." instance=ExtResource("2_5g3sr")]

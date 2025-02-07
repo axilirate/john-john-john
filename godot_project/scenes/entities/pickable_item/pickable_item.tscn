@@ -7,7 +7,8 @@
 size = Vector2(10, 6)
 
 [node name="PickableItem" type="CharacterBody2D"]
-collision_layer = 0
+visible = false
+collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_4a8sb")
 

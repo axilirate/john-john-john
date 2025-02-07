@@ -66,8 +66,11 @@ move_down={
 
 [layer_names]
 
+2d_physics/layer_1="World"
 3d_physics/layer_1="Entities"
+2d_physics/layer_2="Entities"
 3d_physics/layer_2="Tiles"
+2d_physics/layer_3="Interactables"
 
 [physics]
 

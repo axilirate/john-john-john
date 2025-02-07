@@ -1,37 +1,29 @@
 class_name Player extends CharacterController
 
+signal item_picked_up(item: PickableItem)
+signal door_opened(doorway: Doorway)
 
 
-
-@onready var camera_target_pos: Vector2 = global_position
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
-
 
 @export_category("Nodes")
 @export var pickable_target_marker: Marker2D
-@export var camera: Camera2D
 @export var sprite: Sprite2D
+
 
 var flipped: bool = false
 
 
 
 
+
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
-	_process_camera(delta)
 	_process_look_dir()
-	
 	
 	_procss_pickable_target_marker()
 	_process_sprite()
 
-
-
-
-func _process_camera(delta: float) -> void:
-	camera_target_pos = lerp(camera_target_pos, global_position + Vector2(0, -25), delta * 10)
-	camera.global_position = camera_target_pos
 
 
 
@@ -41,7 +33,6 @@ func _process_look_dir() -> void:
 	
 	if velocity.x < 0.0:
 		flipped = true
-
 
 
 
