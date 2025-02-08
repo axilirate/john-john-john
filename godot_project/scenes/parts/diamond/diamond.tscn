@@ -1,0 +1,64 @@
+[gd_scene load_steps=6 format=3 uid="uid://dtpohp4n7wgr7"]
+
+[ext_resource type="Texture2D" uid="uid://b1kfcopod4cu4" path="res://assets/textures/diamond.png" id="1_fjh7o"]
+
+[sub_resource type="Animation" id="Animation_oxq84"]
+resource_name = "idle"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:offset")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 1), Vector2(0, 0), Vector2(0, -1)]
+}
+
+[sub_resource type="Animation" id="Animation_7guyf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hqki4"]
+_data = {
+"RESET": SubResource("Animation_7guyf"),
+"idle": SubResource("Animation_oxq84")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_08j5v"]
+size = Vector2(9, 10)
+
+[node name="Diamond" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hqki4")
+}
+autoplay = "idle"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.0431373, 0.827451, 0.827451, 1)
+position = Vector2(5.5, -9)
+scale = Vector2(1, 1)
+texture = ExtResource("1_fjh7o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5.5, -9)
+shape = SubResource("RectangleShape2D_08j5v")
