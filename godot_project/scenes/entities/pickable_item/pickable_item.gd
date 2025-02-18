@@ -1,1 +1,0 @@
-class_name PickableItem extends CharacterBody2D

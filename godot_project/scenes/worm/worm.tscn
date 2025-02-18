@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c6axgce7b6gm0"]
 
-[ext_resource type="Script" path="res://scenes/entities/worm/worm.gd" id="1_apbu5"]
+[ext_resource type="Script" path="res://scenes/worm/worm.gd" id="1_apbu5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yl5ut"]
 size = Vector2(8, 8)

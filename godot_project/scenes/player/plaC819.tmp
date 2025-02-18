@@ -1,12 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://biu5bs6cpi32d"]
+[gd_scene load_steps=10 format=3 uid="uid://biu5bs6cpi32d"]
 
-[ext_resource type="Script" path="res://scenes/entities/player/player.gd" id="1_g0h32"]
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_g0h32"]
 [ext_resource type="Texture2D" uid="uid://b55rb2kqpdnt0" path="res://assets/textures/player.png" id="2_4l7gt"]
-[ext_resource type="Script" path="res://scenes/entities/player/interaction_processor.gd" id="2_trejc"]
-[ext_resource type="Script" path="res://scenes/entities/player/pickup_processor.gd" id="3_oyvb4"]
-[ext_resource type="PackedScene" uid="uid://dr07o2b51cen" path="res://scenes/general/player_camera/player_camera.tscn" id="4_7c1fg"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jofg1"]
+[ext_resource type="PackedScene" uid="uid://dr07o2b51cen" path="res://scenes/player_camera/player_camera.tscn" id="4_7c1fg"]
 
 [sub_resource type="Animation" id="Animation_4hrxe"]
 length = 0.001
@@ -84,29 +80,10 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vcw8e"]
 size = Vector2(6, 7)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("pickable_target_marker", "sprite")]
+[node name="Player" type="CharacterBody2D"]
 physics_interpolation_mode = 1
 collision_mask = 3
 script = ExtResource("1_g0h32")
-pickable_target_marker = NodePath("PickableTargetMarker")
-sprite = NodePath("Sprite")
-
-[node name="InteractionArea" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-shape = SubResource("RectangleShape2D_jofg1")
-
-[node name="InteractionProcessor" type="Node" parent="." node_paths=PackedStringArray("pickup_processor", "interaction_area", "player")]
-script = ExtResource("2_trejc")
-pickup_processor = NodePath("../PickupProcessor")
-interaction_area = NodePath("../InteractionArea")
-player = NodePath("..")
-
-[node name="PickupProcessor" type="Node" parent="." node_paths=PackedStringArray("player")]
-script = ExtResource("3_oyvb4")
-player = NodePath("..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
@@ -128,10 +105,3 @@ shape = SubResource("RectangleShape2D_vcw8e")
 
 [node name="PlayerCamera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_7c1fg")]
 player = NodePath("..")
-
-[node name="StateLabel" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="PickableTargetMarker" type="Marker2D" parent="."]
-position = Vector2(-4, -7)

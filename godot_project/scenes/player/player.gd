@@ -1,13 +1,9 @@
 class_name Player extends CharacterController
 
-signal item_picked_up(item: PickableItem)
-signal door_opened(doorway: Doorway)
-
 
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 
 @export_category("Nodes")
-@export var pickable_target_marker: Marker2D
 @export var sprite: Sprite2D
 
 
@@ -21,7 +17,6 @@ func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	_process_look_dir()
 	
-	_procss_pickable_target_marker()
 	_process_sprite()
 
 
@@ -33,14 +28,6 @@ func _process_look_dir() -> void:
 	
 	if velocity.x < 0.0:
 		flipped = true
-
-
-
-func _procss_pickable_target_marker() -> void:
-	pickable_target_marker.position.x = -5
-	
-	if flipped:
-		pickable_target_marker.position.x = 5
 
 
 
