@@ -8,11 +8,8 @@ signal landed
 
 const CONTROL_RECHARGE_SPEED: float = 3
 
-const TIME_TO_MAX_SPEED: float = 0.1
-const TIME_TO_STOP: float = 0.1
-
 const TIME_TO_MAX_HEIGHT: float = 0.3
-const DEFAULT_SPEED: float = 57
+const DEFAULT_SPEED: float = 50
 const MAX_HEIGHT: float = 21
 const MIN_HEIGHT: float = 7
 
@@ -25,12 +22,15 @@ var gravity: float = calculate_gravity()
 var time_to_min_height: float = calculate_time_to_min_height()
 
 
+var move_force: Vector2 = Vector2.ZERO
 var speed: float = DEFAULT_SPEED
 var acceleration: float = 0.0
-var friction: float = 0.0
+var friction: float = 0.75
+
 var max_air_jumps: int = 1
 
 
+var ground_time: PackedFloat32Array = [0.0, 0.0]
 var wall_time: PackedFloat32Array = [0.0, 0.0]
 var air_time: PackedFloat32Array = [0.0, 0.0]
 var air_jumps_left: float = max_air_jumps
@@ -38,16 +38,10 @@ var control: Vector2 = Vector2.ONE
 
 
 
-func _set_speed(new_speed: float) -> void:
-	acceleration = speed / TIME_TO_MAX_SPEED
-	friction = speed / TIME_TO_STOP
-	speed = new_speed
-
 
 
 func _ready() -> void:
-	landed.connect(_on_landed)
-	_set_speed(DEFAULT_SPEED)
+	landed.connect(_on_landed) 
 
 
 func _on_landed() -> void:
@@ -56,6 +50,7 @@ func _on_landed() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_process_ground_time(delta)
 	_process_wall_time(delta)
 	_process_air_time(delta)
 	_process_velocity(delta)
@@ -75,6 +70,19 @@ func _process_velocity(delta: float) -> void:
 func _process_control(delta: float) -> void:
 	control = control.move_toward(Vector2.ONE, CONTROL_RECHARGE_SPEED * delta)
 
+
+
+
+
+
+func _process_ground_time(delta: float) -> void:
+	ground_time[1] = ground_time[0]
+	
+	if is_on_floor():
+		ground_time[0] += delta
+		return
+	
+	ground_time[0] = 0.0
 
 
 func _process_wall_time(delta: float) -> void:
@@ -100,27 +108,28 @@ func _process_air_time(delta: float) -> void:
 
 
 
+
+
 func _process_movement(delta: float) -> void:
 	var horizontal_input: int = get_horizontal_input()
+	var target_speed = speed
 	
-	if not horizontal_input == 0:
-		var target_speed: float = horizontal_input * acceleration * maxf(control.x, 0.0) * delta
-		match horizontal_input:
-			1: 
-				var remainder: float = speed - velocity.x
-				target_speed = minf(target_speed, remainder)
-			
-			-1: 
-				var remainder: float = -velocity.x - speed
-				target_speed = maxf(target_speed, remainder)
-		
-		
-		velocity.x += target_speed
+	
+	if ground_time[0] > 0.05:
+		velocity.x = lerp(velocity.x, horizontal_input * speed, delta * 17.5)
 		return
 	
 	
-	if air_time[0] == 0.0:
-		velocity.x = move_toward(velocity.x, 0.0, friction * delta)
+	if not horizontal_input == 0:
+		var target_vel: float = horizontal_input * speed
+		
+		if sign(velocity.x) == horizontal_input:
+			target_vel = maxf(abs(target_vel), abs(velocity.x)) * horizontal_input
+		
+		velocity.x = lerp(velocity.x, target_vel, delta * 17.5 * maxf(0.0, control.x))
+
+
+
 
 
 
@@ -155,7 +164,7 @@ func _jump(jump_type: JumpType) -> void:
 		JumpType.WALL:
 			var wall_dir: int = get_wall_normal().x
 			velocity.x += WALL_JUMP_FORCE * wall_dir
-			control.x -= 0.5
+			control.x = 0.0
 	
 	jumped.emit(jump_type)
 
