@@ -11,11 +11,16 @@ var flipped: bool = false
 
 
 
+func _ready() -> void:
+	super._ready()
+	_process_ghost_trail()
+
 
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	_process_animation_blends()
+	
 	_process_look_dir()
 	_process_sprite()
 
@@ -30,7 +35,7 @@ func _process_look_dir() -> void:
 		flipped = true
 	
 	
-	if is_on_wall() and air_time[0] > 0.1:
+	if is_on_wall() and air_time.current > 0.1:
 		var normal: Vector2 = get_wall_normal()
 		flipped = normal.x == -1
 
@@ -48,6 +53,25 @@ func _process_sprite() -> void:
 	
 	sprite.flip_h = flipped
 	sprite.offset.x = 0
+
+
+
+
+func _process_ghost_trail() -> void:
+	while true:
+		
+		await get_tree().create_timer(0.025).timeout
+		if not is_dashing:
+			continue
+		
+		var ghost_trail: Sprite2D = sprite.duplicate()
+		ghost_trail.set_script(preload("res://scripts/nodes/ghost_trail.gd"))
+		ghost_trail = ghost_trail as GhostTrail
+		ghost_trail.global_position = sprite.global_position
+		ghost_trail.top_level = true
+		add_child(ghost_trail)
+		ghost_trail.z_index = -1
+		ghost_trail.init()
 
 
 

@@ -1,8 +1,12 @@
-[gd_scene load_steps=22 format=3 uid="uid://biu5bs6cpi32d"]
+[gd_scene load_steps=23 format=3 uid="uid://biu5bs6cpi32d"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_g0h32"]
 [ext_resource type="Texture2D" uid="uid://b55rb2kqpdnt0" path="res://assets/textures/player.png" id="2_4l7gt"]
 [ext_resource type="PackedScene" uid="uid://dr07o2b51cen" path="res://scenes/player_camera/player_camera.tscn" id="4_7c1fg"]
+
+[sub_resource type="Curve" id="Curve_q02tu"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.107143, 0.718384), 0.464978, 0.288873, 0, 0, Vector2(0.699405, 1), 0.0, 0.0, 0, 0, Vector2(0.997024, 0.307377), -2.32721, 0.0, 1, 0]
+point_count = 4
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_orkpe"]
 animation = &"air_jump_left"
@@ -201,6 +205,7 @@ physics_interpolation_mode = 1
 collision_mask = 3
 script = ExtResource("1_g0h32")
 sprite = NodePath("Sprite")
+dash_curve = SubResource("Curve_q02tu")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 unique_name_in_owner = true
