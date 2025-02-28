@@ -16,7 +16,7 @@ const DASH_DURATION: float = 0.15
 const DASH_COOLDOWN: float = 1.0
 const DASH_LENGTH: float = 25
 
-const DEFAULT_SPEED: float = 50
+const DEFAULT_SPEED: float = 57
 const MAX_HEIGHT: float = 21
 const MIN_HEIGHT: float = 7
 
@@ -27,16 +27,32 @@ const WALL_JUMP_FORCE: float = 75
 @export var dash_curve: Curve
 
 
+var jump_strength: float = get_jump_strength()
+var jump_gravity: float = get_jump_gravity()
+var fall_gravity: float = get_fall_gravity()
 
 #var time_to_min_height: float = get_time_to_min_height()
-#var jump_gravity: float = get_jump_gravity()
-#var fall_gravity: float = get_fall_gravity()
-#var jump_force: float = get_jump_force()
-var dash_force: float = 0.0
+#var dash_force: float = 0.0
+#
+#
+#var move_force: Vector2 = Vector2.ZERO
+
+#
+
+#
+#
 
 
-var move_force: Vector2 = Vector2.ZERO
-var speed: float = DEFAULT_SPEED
+#var dash_direction: Vector2 = Vector2.ZERO
+
+#
+#var last_input_vector: Vector2 = Vector2.ZERO
+#
+#var dash_cooldown: float = 0.0
+#
+#var dash_velocity: Vector2 = Vector2.ZERO
+#var gravity_force: float = 0.0
+
 
 var max_air_jumps: int = 1
 
@@ -44,18 +60,17 @@ var max_air_jumps: int = 1
 var ground_time: ActionDuration = ActionDuration.new()
 var wall_time: ActionDuration = ActionDuration.new()
 var air_time: ActionDuration = ActionDuration.new()
-var air_jumps_left: float = max_air_jumps
-var dash_direction: Vector2 = Vector2.ZERO
-var control: Vector2 = Vector2.ONE
 
-var last_input_vector: Vector2 = Vector2.ZERO
 
-var dash_cooldown: float = 0.0
-var is_dashing: bool
-
-var dash_velocity: Vector2 = Vector2.ZERO
 var movement_force: float = 0.0
 var gravity_force: float = 0.0
+var jump_force: float = 0.0
+
+
+var air_jumps_left: float = max_air_jumps
+var control: Vector2 = Vector2.ONE
+var speed: float = DEFAULT_SPEED
+var is_dashing: bool
 
 
 class ActionDuration:
@@ -65,15 +80,119 @@ class ActionDuration:
 
 
 
+
 func _ready() -> void:
 	pass
 
 
 
+
 func _physics_process(delta: float) -> void:
-	pass
+	_process_ground_time(delta)
+	_process_wall_time(delta)
+	_process_air_time(delta)
+	
+	
+	_process_movement_force(delta)
+	_process_gravity_force(delta)
+	_process_jump_force(delta)
+	
+	velocity = get_target_velocity()
+	move_and_slide()
 
 
+
+
+
+
+func _process_ground_time(delta: float) -> void:
+	ground_time.last = ground_time.current
+	
+	if is_on_floor():
+		ground_time.current += delta
+		ground_time.stopped = 0.0
+		return
+	
+	ground_time.stopped += delta
+	ground_time.current = 0.0
+
+
+
+func _process_wall_time(delta: float) -> void:
+	wall_time.last = wall_time.current
+	
+	if is_on_wall():
+		wall_time.current += delta
+		wall_time.stopped = 0.0
+		return
+	
+	wall_time.stopped += delta
+	wall_time.current = 0.0
+
+
+
+func _process_air_time(delta: float) -> void:
+	air_time.last = air_time.current
+	
+	if not is_on_floor():
+		air_time.current += delta
+		air_time.stopped = 0.0
+		return
+	
+	air_time.stopped += delta
+	air_time.current = 0.0
+
+
+
+
+
+
+func _process_gravity_force(delta: float) -> void:
+	if is_on_floor():
+		gravity_force = 0.0
+		return
+	
+	var target_gravity: float = get_target_gravity()
+	gravity_force += target_gravity * delta
+
+
+
+func _process_jump_force(delta: float) -> void:
+	if not is_on_floor():
+		return
+	
+	jump_force = 0.0
+	
+	if Input.is_action_pressed("jump"):
+		jump_force -= get_jump_strength()
+
+
+
+
+func _process_movement_force(delta: float) -> void:
+	var horizontal_input: int = get_horizontal_input()
+	movement_force = lerp(movement_force, horizontal_input * speed, delta * 17.5)
+
+
+
+
+
+
+
+
+
+
+
+func get_target_velocity() -> Vector2:
+	var target_velocity: Vector2 = Vector2(movement_force, gravity_force)
+	target_velocity.y += jump_force
+	
+	return target_velocity
+
+
+
+func get_target_gravity() -> float:
+	return jump_gravity if velocity.y < 0.0 else fall_gravity
 
 
 func get_horizontal_input() -> int:
@@ -87,6 +206,15 @@ func get_horizontal_input() -> int:
 
 
 
+
+func get_jump_gravity():
+	return (2 * MAX_HEIGHT) / pow(TIME_TO_MAX_HEIGHT, 2)
+
+func get_fall_gravity():
+	return (2 * MAX_HEIGHT) / pow(TIME_TO_LAND, 2)
+
+func get_jump_strength():
+	return (2 * MAX_HEIGHT) / (TIME_TO_MAX_HEIGHT)
 
 
 #func _ready() -> void:
@@ -135,40 +263,6 @@ func get_horizontal_input() -> int:
 #
 #
 #
-#func _process_ground_time(delta: float) -> void:
-	#ground_time.last = ground_time.current
-	#
-	#if is_on_floor():
-		#ground_time.current += delta
-		#ground_time.stopped = 0.0
-		#return
-	#
-	#ground_time.stopped += delta
-	#ground_time.current = 0.0
-#
-#
-#func _process_wall_time(delta: float) -> void:
-	#wall_time.last = wall_time.current
-	#
-	#if is_on_wall():
-		#wall_time.current += delta
-		#wall_time.stopped = 0.0
-		#return
-	#
-	#wall_time.stopped += delta
-	#wall_time.current = 0.0
-#
-#
-#func _process_air_time(delta: float) -> void:
-	#air_time.last = air_time.current
-	#
-	#if not is_on_floor():
-		#air_time.current += delta
-		#air_time.stopped = 0.0
-		#return
-	#
-	#air_time.stopped += delta
-	#air_time.current = 0.0
 #
 #
 #
@@ -217,17 +311,7 @@ func get_horizontal_input() -> int:
 #
 #
 #
-#func _jump(jump_type: JumpType) -> void:
-	#velocity.y = -jump_force
-	#match jump_type:
-		#JumpType.AIR: air_jumps_left -= 1
-		#
-		#JumpType.WALL:
-			#var wall_dir: int = int(get_wall_normal().x)
-			#velocity.x += WALL_JUMP_FORCE * wall_dir
-			#control.x = 0.0
-	#
-	#jumped.emit(jump_type)
+
 #
 #
 #
@@ -344,16 +428,9 @@ func get_horizontal_input() -> int:
 	#return DASH_LENGTH / (DASH_DURATION * curve_integral)
 #
 #
-#func get_jump_gravity():
-	#return (2 * MAX_HEIGHT) / pow(TIME_TO_MAX_HEIGHT, 2)
 #
 #
-#func get_fall_gravity():
-	#return (2 * MAX_HEIGHT) / pow(TIME_TO_LAND, 2)
-#
-#
-#func get_jump_force():
-	#return (2 * MAX_HEIGHT) / (TIME_TO_MAX_HEIGHT)
+
 #
 #
 #func get_time_to_min_height() -> float:
