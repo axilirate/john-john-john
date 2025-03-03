@@ -158,13 +158,18 @@ func _process_gravity_force(delta: float) -> void:
 
 
 func _process_jump_force(delta: float) -> void:
+	
+	if not Input.is_action_pressed("jump"):
+		if velocity.y < 0.0 and air_time.current > 0.1:
+			jump_force = -get_jump_strength() * 0.5
+	
 	if not is_on_floor():
 		return
 	
 	jump_force = 0.0
 	
 	if Input.is_action_pressed("jump"):
-		jump_force -= get_jump_strength()
+		jump_force = -get_jump_strength()
 
 
 
@@ -172,10 +177,6 @@ func _process_jump_force(delta: float) -> void:
 func _process_movement_force(delta: float) -> void:
 	var horizontal_input: int = get_horizontal_input()
 	movement_force = lerp(movement_force, horizontal_input * speed, delta * 17.5)
-
-
-
-
 
 
 
