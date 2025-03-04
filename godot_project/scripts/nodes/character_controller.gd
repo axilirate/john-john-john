@@ -147,28 +147,41 @@ func _process_air_time(delta: float) -> void:
 
 
 
+
 func _process_gravity_force(delta: float) -> void:
 	if is_on_floor():
 		gravity_force = 0.0
 		return
 	
 	var target_gravity: float = get_target_gravity()
+	var limit: float = fall_gravity * 1.45
+	
+	if is_on_wall():
+		limit = 0.0
+		#if wall_time.current > 0.25:
+			#limit = fall_gravity * 0.25
+	
 	gravity_force += target_gravity * delta
+	gravity_force = minf(gravity_force, limit)
+	print(gravity_force, " : ", limit)
+	
+
 
 
 
 func _process_jump_force(delta: float) -> void:
-	
 	if not Input.is_action_pressed("jump"):
-		if velocity.y < 0.0 and air_time.current > 0.1:
+		if velocity.y < 0.0 and air_time.current > 0.05:
 			jump_force = -get_jump_strength() * 0.5
 	
-	if not is_on_floor():
-		return
 	
-	jump_force = 0.0
+	if is_on_wall():
+		jump_force = 0.0
 	
-	if Input.is_action_pressed("jump"):
+	if is_on_floor() or is_on_ceiling():
+		jump_force = 0.0
+	
+	if Input.is_action_pressed("jump") and is_on_floor():
 		jump_force = -get_jump_strength()
 
 

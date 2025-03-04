@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=3 uid="uid://biu5bs6cpi32d"]
 
-[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_g0h32"]
+[ext_resource type="Script" uid="uid://b0dj6eq6q12vr" path="res://scenes/player/player.gd" id="1_g0h32"]
 [ext_resource type="Texture2D" uid="uid://b55rb2kqpdnt0" path="res://assets/textures/player.png" id="2_4l7gt"]
 [ext_resource type="PackedScene" uid="uid://dr07o2b51cen" path="res://scenes/player_camera/player_camera.tscn" id="4_7c1fg"]
 
@@ -189,12 +189,12 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vtp8g"]
 _data = {
-"RESET": SubResource("Animation_4hrxe"),
-"air": SubResource("Animation_lcvl4"),
-"air_jump_left": SubResource("Animation_wkr7s"),
-"air_jump_right": SubResource("Animation_ueoth"),
-"idle": SubResource("Animation_3hp37"),
-"run": SubResource("Animation_oie1p")
+&"RESET": SubResource("Animation_4hrxe"),
+&"air": SubResource("Animation_lcvl4"),
+&"air_jump_left": SubResource("Animation_wkr7s"),
+&"air_jump_right": SubResource("Animation_ueoth"),
+&"idle": SubResource("Animation_3hp37"),
+&"run": SubResource("Animation_oie1p")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vcw8e"]
@@ -222,7 +222,7 @@ parameters/run_blend/blend_amount = 0.0
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
 libraries = {
-"": SubResource("AnimationLibrary_vtp8g")
+&"": SubResource("AnimationLibrary_vtp8g")
 }
 
 [node name="Sprite" type="Sprite2D" parent="."]

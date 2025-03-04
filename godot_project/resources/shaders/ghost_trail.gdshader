@@ -6,10 +6,10 @@ uniform bool fill;
 
 void fragment() {
 	vec4 tex = texture(TEXTURE, UV);
-	
+
 	if (fill){
 		COLOR.rgb = color;
 	}
-	
+
 	COLOR.a = tex.a * alpha;
 }
