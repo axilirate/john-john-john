@@ -2,7 +2,7 @@ class_name World extends Node2D
 
 static var player_camera: PlayerCamera = preload("res://scenes/player_camera/player_camera.tscn").instantiate()
 static var player: Player = preload("res://scenes/player/player.tscn").instantiate()
-static var gravity: float = 9.8
+static var gravity: float = 7.5
 
 @export var player_spawn: Marker2D
 
