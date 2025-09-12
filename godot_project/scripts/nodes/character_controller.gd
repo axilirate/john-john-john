@@ -1,17 +1,24 @@
 class_name CharacterController extends CharacterBody2D
 
 @export var animation_tree: AnimationTree
+@export var sprite: Sprite2D
 
-
-var speed: float = 30.0
-
+var last_input: Vector2 = get_input()
+var speed: float = 35.0
 
 
 
 func _process(_delta: float) -> void:
+	process_last_input.call_deferred()
 	process_animation_tree()
 	process_velocity()
 	move_and_slide()
+	process_sprite()
+
+
+
+func process_last_input() -> void:
+	last_input = get_input()
 
 
 
@@ -33,8 +40,12 @@ func process_gravity() -> void:
 
 func process_jump() -> void:
 	var input: Vector2 = get_input()
-	if input.y > 0 and is_on_floor():
+	
+	if is_on_floor() and just_pressed_jump():
 		velocity.y -= 200
+	
+	if velocity.y < 0 and just_released_jump():
+		velocity.y = 0
 
 
 
@@ -43,10 +54,20 @@ func process_horizontal_movement() -> void:
 	velocity.x = input.x * speed
 
 
+func process_sprite() -> void:
+	pass
+
 
 func process_animation_tree() -> void:
 	if not is_instance_valid(animation_tree):
 		return
+
+
+func just_pressed_jump() -> bool:
+	return last_input.y <= 0 and get_input().y > 0
+
+func just_released_jump() -> bool:
+	return last_input.y > 0 and get_input().y <= 0
 
 
 func get_input() -> Vector2:
