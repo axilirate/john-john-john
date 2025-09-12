@@ -126,6 +126,15 @@ func process_sprite() -> void:
 func process_animation_tree() -> void:
 	if not is_instance_valid(animation_tree):
 		return
+	
+	var is_running: bool = not is_equal_approx(velocity.x, 0.0) and not get_input().x == 0
+	
+	#if not animation_tree["parameters/air_jump_one_shot/active"]:
+		#animation_tree["parameters/air_jump_blend/blend_amount"] = int(flipped)
+	
+	animation_tree["parameters/air_blend/blend_amount"] = int(not is_on_floor())
+	animation_tree["parameters/run_blend/blend_amount"] = int(is_running)
+
 
 
 func just_pressed_jump() -> bool:
