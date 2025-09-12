@@ -16,8 +16,22 @@ func _process(_delta: float) -> void:
 
 
 
-
 func process_velocity() -> void:
+	process_horizontal_movement()
+	process_gravity()
+
+
+
+func process_gravity() -> void:
+	velocity.y += World.gravity
+	
+	if is_on_floor():
+		velocity.y = 0
+
+
+
+
+func process_horizontal_movement() -> void:
 	var horizontal_input: int = get_horizontal_input()
 	velocity.x = horizontal_input * speed
 
@@ -26,9 +40,6 @@ func process_velocity() -> void:
 func process_animation_tree() -> void:
 	if not is_instance_valid(animation_tree):
 		return
-
-
-
 
 
 
