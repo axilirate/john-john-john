@@ -1,15 +1,15 @@
 class_name PlayerCamera extends Camera2D
 
 
-@onready var target_pos: Vector2 = player.global_position
-@export var player: Player
+@onready var target_pos: Vector2 = get_target_pos()
 
 
-
-
-
-
+func _ready() -> void:
+	global_position = target_pos
 
 func _physics_process(delta: float) -> void:
-	target_pos = lerp(target_pos, player.global_position + Vector2(0, -25), delta * 10)
+	target_pos = lerp(target_pos, get_target_pos(), delta * 10)
 	global_position = target_pos
+
+func get_target_pos() -> Vector2:
+	return World.player.global_position + Vector2(0, -25)
