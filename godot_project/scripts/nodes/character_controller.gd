@@ -9,6 +9,7 @@ enum State {
 
 var last_input: Vector2 = get_input()
 var jump_power: float = 175.0
+var coyote_time: float = 0.1
 var speed: float = 35.0
 
 var air_time: float = 0.0
@@ -17,7 +18,7 @@ var states: Array[State] = []
 
 
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	process_last_input.call_deferred()
 	process_air_time(delta)
 	process_hard_fall()
@@ -62,11 +63,11 @@ func process_visuals() -> void:
 	process_sprite()
 
 
+
 func process_velocity(delta) -> void:
 	process_horizontal_movement()
 	process_gravity()
 	process_jump(delta)
-
 
 
 
@@ -81,7 +82,7 @@ func process_gravity() -> void:
 func process_jump(delta) -> void:
 	var input: Vector2 = get_input()
 	
-	if is_on_floor() and just_pressed_jump():
+	if air_time < coyote_time and just_pressed_jump():
 		velocity.y -= jump_power
 	
 	if not is_equal_approx(velocity.y, 0.0):
