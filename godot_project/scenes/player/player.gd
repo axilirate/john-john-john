@@ -7,11 +7,8 @@ class_name Player extends CharacterController
 
 
 
-func get_horizontal_input() -> int:
-	if Input.is_action_pressed("move_left"):
-		return -1
+func get_input() -> Vector2:
+	var x: int = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
+	var y: int = int(Input.is_action_pressed("jump"))
 	
-	if Input.is_action_pressed("move_right"):
-		return 1
-	
-	return 0
+	return Vector2(x, y)

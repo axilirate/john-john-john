@@ -15,10 +15,11 @@ func _process(_delta: float) -> void:
 
 
 
-
 func process_velocity() -> void:
 	process_horizontal_movement()
 	process_gravity()
+	process_jump()
+
 
 
 
@@ -30,10 +31,16 @@ func process_gravity() -> void:
 
 
 
+func process_jump() -> void:
+	var input: Vector2 = get_input()
+	if input.y > 0 and is_on_floor():
+		velocity.y -= 200
+
+
 
 func process_horizontal_movement() -> void:
-	var horizontal_input: int = get_horizontal_input()
-	velocity.x = horizontal_input * speed
+	var input: Vector2 = get_input()
+	velocity.x = input.x * speed
 
 
 
@@ -42,6 +49,5 @@ func process_animation_tree() -> void:
 		return
 
 
-
-func get_horizontal_input() -> int:
-	return 0
+func get_input() -> Vector2:
+	return Vector2.ZERO
