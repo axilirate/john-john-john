@@ -1,12 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://biu5bs6cpi32d"]
+[gd_scene load_steps=22 format=3 uid="uid://biu5bs6cpi32d"]
 
-[ext_resource type="Script" uid="uid://b0dj6eq6q12vr" path="res://scenes/player/player.gd" id="1_g0h32"]
+[ext_resource type="Script" uid="uid://c5j4kk3bynkx5" path="res://scripts/nodes/character_controller.gd" id="1_gmlin"]
 [ext_resource type="Texture2D" uid="uid://b55rb2kqpdnt0" path="res://assets/textures/player.png" id="2_4l7gt"]
 [ext_resource type="PackedScene" uid="uid://dr07o2b51cen" path="res://scenes/player_camera/player_camera.tscn" id="4_7c1fg"]
-
-[sub_resource type="Curve" id="Curve_q02tu"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.107143, 0.718384), 0.464978, 0.288873, 0, 0, Vector2(0.699405, 1), 0.0, 0.0, 0, 0, Vector2(0.997024, 0.307377), -2.32721, 0.0, 1, 0]
-point_count = 4
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_orkpe"]
 animation = &"air_jump_left"
@@ -32,6 +28,7 @@ animation = &"idle"
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_xbgf7"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4861o"]
+graph_offset = Vector2(-669.257, 30.662)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_40tew")
 nodes/Animation/position = Vector2(-700, 80)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_orkpe")
@@ -200,16 +197,12 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vcw8e"]
 size = Vector2(6, 7)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite")]
+[node name="Player" type="CharacterBody2D"]
 physics_interpolation_mode = 1
 collision_mask = 3
-script = ExtResource("1_g0h32")
-sprite = NodePath("Sprite")
-dash_curve = SubResource("Curve_q02tu")
+script = ExtResource("1_gmlin")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-unique_name_in_owner = true
-root_node = NodePath("%AnimationTree/..")
 tree_root = SubResource("AnimationNodeBlendTree_4861o")
 anim_player = NodePath("../AnimationPlayer")
 parameters/air_blend/blend_amount = 0
@@ -220,7 +213,6 @@ parameters/air_jump_one_shot/request = 0
 parameters/run_blend/blend_amount = 0.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_vtp8g")
 }
@@ -239,5 +231,3 @@ shape = SubResource("RectangleShape2D_vcw8e")
 
 [node name="PlayerCamera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_7c1fg")]
 player = NodePath("..")
-
-[connection signal="jumped" from="." to="." method="_on_jumped"]
