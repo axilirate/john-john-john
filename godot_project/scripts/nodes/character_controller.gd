@@ -8,7 +8,7 @@ enum State {
 @export var sprite: Sprite2D
 
 var last_input: Vector2 = get_input()
-var jump_power: float = 175.0
+var jump_power: float = 125.0
 var coyote_time: float = 0.1
 var speed: float = 35.0
 
