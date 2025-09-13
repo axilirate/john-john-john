@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmywky72r313k"]
+[gd_scene load_steps=5 format=3 uid="uid://cmywky72r313k"]
 
 [ext_resource type="Texture2D" uid="uid://b618h2ars7srr" path="res://assets/textures/door.png" id="1_wck03"]
+[ext_resource type="PackedScene" uid="uid://oa5pyaoqhvkd" path="res://scenes/world_popup/world_popup.tscn" id="2_jh831"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jh831"]
 atlas = ExtResource("1_wck03")
@@ -18,3 +19,7 @@ texture = SubResource("AtlasTexture_jh831")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
 shape = SubResource("RectangleShape2D_wck03")
+
+[node name="WorldPopup" parent="." instance=ExtResource("2_jh831")]
+z_index = 1
+position = Vector2(0, -13)
