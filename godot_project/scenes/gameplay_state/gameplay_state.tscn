@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5dttforcewbf"]
+
+[ext_resource type="PackedScene" uid="uid://cks5b4mtsm7ju" path="res://scenes/world/world.tscn" id="1_wl5b8"]
+[ext_resource type="Texture2D" uid="uid://c26h20xjd6kwh" path="res://assets/textures/coin_ui.png" id="2_6fno2"]
+[ext_resource type="Script" uid="uid://iiqxibh6vhr8" path="res://scenes/gameplay_state/coins_label.gd" id="3_6fno2"]
+
+[node name="GameplayState" type="Node"]
+
+[node name="World" parent="." instance=ExtResource("1_wl5b8")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+offset_left = 11.0
+offset_top = 11.0
+offset_right = 78.0
+offset_bottom = 59.0
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+modulate = Color(1, 0.596078, 0.0509804, 1)
+custom_minimum_size = Vector2(39, 48)
+layout_mode = 2
+texture = ExtResource("2_6fno2")
+stretch_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = -5
+
+[node name="CoinsLabel" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer/MarginContainer"]
+modulate = Color(1, 0.596078, 0.0509804, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "0"
+script = ExtResource("3_6fno2")

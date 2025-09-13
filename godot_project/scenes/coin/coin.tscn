@@ -1,6 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqil1lp8wh1hc"]
+[gd_scene load_steps=7 format=3 uid="uid://cqil1lp8wh1hc"]
 
+[ext_resource type="Script" uid="uid://dwln1x13biiia" path="res://scenes/coin/coin.gd" id="1_u0637"]
 [ext_resource type="Texture2D" uid="uid://dfi3bitqpecm0" path="res://assets/textures/coin.png" id="1_yr0ns"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u0637"]
+size = Vector2(8, 11)
 
 [sub_resource type="Animation" id="Animation_u0637"]
 resource_name = "idle"
@@ -65,9 +69,13 @@ _data = {
 &"idle": SubResource("Animation_u0637")
 }
 
-[node name="Coin" type="Area2D"]
+[node name="Coin" type="Area2D" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("1_u0637")
+animation_player = NodePath("AnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5.5)
+shape = SubResource("RectangleShape2D_u0637")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 0.596078, 0.0509804, 1)

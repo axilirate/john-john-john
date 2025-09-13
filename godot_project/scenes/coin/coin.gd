@@ -1,0 +1,18 @@
+class_name Coin extends Area2D
+
+
+@export var animation_player: AnimationPlayer
+
+
+
+
+func collect() -> void:
+	var collection_time: float = 0.25
+	animation_player.stop()
+	var t1 = create_tween().tween_property(self, "global_position:y", global_position.y + 2, 0.1)
+	await t1.finished
+	create_tween().tween_property(self, "global_position:y", global_position.y - 5, collection_time)
+	create_tween().tween_property(self, "modulate:a", 0, collection_time).set_ease(Tween.EASE_OUT)
+	await get_tree().create_timer(collection_time).timeout
+	hide()
+	queue_free()

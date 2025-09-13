@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://biu5bs6cpi32d"]
+[gd_scene load_steps=22 format=3 uid="uid://biu5bs6cpi32d"]
 
 [ext_resource type="Script" uid="uid://cj55dpjoqd0mk" path="res://scenes/player/player.gd" id="1_g0h32"]
 [ext_resource type="Texture2D" uid="uid://b55rb2kqpdnt0" path="res://assets/textures/player.png" id="2_4l7gt"]
@@ -196,6 +196,9 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vcw8e"]
 size = Vector2(6, 7)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
+size = Vector2(8, 9)
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animation_tree", "sprite")]
 physics_interpolation_mode = 1
 collision_mask = 3
@@ -229,3 +232,11 @@ region_rect = Rect2(0, 0, 12, 9)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -3.5)
 shape = SubResource("RectangleShape2D_vcw8e")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -3.5)
+shape = SubResource("RectangleShape2D_dovo2")
+
+[connection signal="area_entered" from="InteractionArea" to="." method="_on_interaction_area_area_entered"]

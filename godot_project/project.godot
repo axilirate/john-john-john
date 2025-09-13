@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="John John John"
-run/main_scene="res://scenes/world/world.tscn"
+run/main_scene="uid://b5dttforcewbf"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 
