@@ -199,10 +199,11 @@ size = Vector2(6, 7)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(8, 9)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animation_tree", "sprite")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("interaction_area", "animation_tree", "sprite")]
 physics_interpolation_mode = 1
 collision_mask = 3
 script = ExtResource("1_g0h32")
+interaction_area = NodePath("InteractionArea")
 animation_tree = NodePath("AnimationTree")
 sprite = NodePath("Sprite")
 

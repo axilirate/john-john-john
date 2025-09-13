@@ -15,10 +15,14 @@ var speed: float = 35.0
 var air_time: float = 0.0
 
 var states: Array[State] = []
+var animating: bool = false
 
 
 
 func _physics_process(delta: float) -> void:
+	if animating:
+		return
+	
 	process_last_input.call_deferred()
 	process_air_time(delta)
 	process_hard_fall()

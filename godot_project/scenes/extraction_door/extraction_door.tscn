@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://cmywky72r313k"]
+[gd_scene load_steps=7 format=3 uid="uid://cmywky72r313k"]
 
+[ext_resource type="Script" uid="uid://cwhvt3debjw82" path="res://scenes/extraction_door/extraction_door.gd" id="1_gpqa8"]
 [ext_resource type="Texture2D" uid="uid://b618h2ars7srr" path="res://assets/textures/door.png" id="1_wck03"]
 [ext_resource type="PackedScene" uid="uid://oa5pyaoqhvkd" path="res://scenes/world_popup/world_popup.tscn" id="2_jh831"]
 
@@ -10,7 +11,14 @@ region = Rect2(11, 0, 11, 11)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wck03"]
 size = Vector2(14, 10)
 
-[node name="ExtractionDoor" type="Area2D"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpqa8"]
+atlas = ExtResource("1_wck03")
+region = Rect2(22, 0, 22, 11)
+
+[node name="ExtractionDoor" type="Area2D" node_paths=PackedStringArray("wall_sprite_left", "wall_sprite_right")]
+script = ExtResource("1_gpqa8")
+wall_sprite_left = NodePath("WallSpriteLeft")
+wall_sprite_right = NodePath("WallSpriteRight")
 
 [node name="Door" type="Sprite2D" parent="."]
 position = Vector2(0, -5.5)
@@ -21,8 +29,20 @@ position = Vector2(0, -5)
 shape = SubResource("RectangleShape2D_wck03")
 
 [node name="WorldPopup" parent="." node_paths=PackedStringArray("area") instance=ExtResource("2_jh831")]
-z_index = 1
 position = Vector2(0, -20)
 text = "Press \"E\" to extract
 extracted: 0/3"
 area = NodePath("..")
+
+[node name="WallSpriteLeft" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(-9.5, -5.5)
+texture = SubResource("AtlasTexture_gpqa8")
+
+[node name="WallSpriteRight" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(9.5, -5.5)
+texture = SubResource("AtlasTexture_gpqa8")
+flip_h = true
