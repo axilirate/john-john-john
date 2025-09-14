@@ -18,6 +18,7 @@ boot_splash/bg_color=Color(0, 0, 0, 1)
 [autoload]
 
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
+E="*res://scripts/nodes/events.gd"
 
 [editor_plugins]
 

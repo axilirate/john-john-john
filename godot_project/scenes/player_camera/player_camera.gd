@@ -1,7 +1,7 @@
 class_name PlayerCamera extends Camera2D
 
-
 @onready var target_pos: Vector2 = get_target_pos()
+@export var player: Player
 
 
 func _ready() -> void:
@@ -12,4 +12,4 @@ func _physics_process(delta: float) -> void:
 	global_position = target_pos
 
 func get_target_pos() -> Vector2:
-	return World.player.global_position + Vector2(0, -25)
+	return player.global_position + Vector2(0, -25)

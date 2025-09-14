@@ -1,9 +1,7 @@
 class_name Player extends CharacterController
 
-signal coins_changed
 
 @export var interaction_area: Area2D
-var extracting: bool = false
 var coins: int = 0
 
 
@@ -19,8 +17,8 @@ func _input(event: InputEvent) -> void:
 
 func extract(area_position: Vector2) -> void:
 	animation_tree["parameters/run_blend/blend_amount"] = 1
-	extracting = true
 	animating = true
+	E.player_extracted.emit(self)
 	
 	if area_position.x <= global_position.x:
 		create_tween().tween_property(self, "global_position:x", area_position.x - 15, 2.0)
@@ -29,12 +27,14 @@ func extract(area_position: Vector2) -> void:
 	if area_position.x > global_position.x:
 		create_tween().tween_property(self, "global_position:x", area_position.x + 15, 2.0)
 		sprite.flip_h = false
+	
+	
 
 
 
 func change_coins(amount: int) -> void:
 	coins += amount
-	coins_changed.emit()
+	E.player_coins_changed.emit(self)
 
 
 func get_input() -> Vector2:

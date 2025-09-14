@@ -1,7 +1,8 @@
-[gd_scene load_steps=22 format=3 uid="uid://biu5bs6cpi32d"]
+[gd_scene load_steps=23 format=3 uid="uid://biu5bs6cpi32d"]
 
 [ext_resource type="Script" uid="uid://cj55dpjoqd0mk" path="res://scenes/player/player.gd" id="1_g0h32"]
 [ext_resource type="Texture2D" uid="uid://b55rb2kqpdnt0" path="res://assets/textures/player.png" id="2_4l7gt"]
+[ext_resource type="PackedScene" uid="uid://dr07o2b51cen" path="res://scenes/player_camera/player_camera.tscn" id="3_gmlin"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_orkpe"]
 animation = &"air_jump_left"
@@ -239,5 +240,8 @@ shape = SubResource("RectangleShape2D_vcw8e")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 position = Vector2(0, -3.5)
 shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="PlayerCamera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_gmlin")]
+player = NodePath("..")
 
 [connection signal="area_entered" from="InteractionArea" to="." method="_on_interaction_area_area_entered"]

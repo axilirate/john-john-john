@@ -24,7 +24,8 @@ func _process(delta: float) -> void:
 	hide()
 	for body in area.get_overlapping_bodies():
 		if body is Player:
-			show()
+			if not body.animating:
+				show()
 			return
 
 
