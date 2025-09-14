@@ -17,17 +17,19 @@ func _ready() -> void:
 		text += "Extracted: 0/3"
 		update()
 		
-		node_ref = extraction_door
-		await get_tree().process_frame
-		await get_tree().process_frame
-		await get_tree().process_frame
-		show()
+		show_from_node(extraction_door)
 		)
 	
 	E.player_exited_extraction_door_area.connect(func(player: Player, extraction_door: ExtractionDoor):
-		if node_ref == extraction_door:
-			node_ref = null
-			hide()
+		hide_from_node(extraction_door)
+		)
+	
+	E.skill_node_mouse_entered.connect(func(skill_node: SkillNode):
+		show_from_node(skill_node)
+		)
+	
+	E.skill_node_mouse_exited.connect(func(skill_node: SkillNode):
+		hide_from_node(skill_node)
 		)
 	
 	E.player_extracted.connect(func(player: Player):
@@ -38,6 +40,20 @@ func _ready() -> void:
 	
 	update()
 	hide()
+
+
+func show_from_node(arg_node_ref: Node2D) -> void:
+	node_ref = arg_node_ref
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	show()
+
+
+func hide_from_node(arg_node_ref: Node2D) -> void:
+	if node_ref == arg_node_ref:
+		node_ref = null
+		hide()
 
 
 func _process(_delta: float) -> void:
