@@ -18,7 +18,8 @@ boot_splash/bg_color=Color(0, 0, 0, 1)
 [autoload]
 
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
-E="*res://scripts/nodes/events.gd"
+E="*res://scripts/singletons/events.gd"
+D="*res://scripts/singletons/data.gd"
 
 [editor_plugins]
 
@@ -28,6 +29,7 @@ enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg")
 
 folder_colors={
 "res://assets/": "blue",
+"res://resources/": "yellow",
 "res://scenes/": "orange",
 "res://scripts/": "teal"
 }

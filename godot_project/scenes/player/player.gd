@@ -2,8 +2,6 @@ class_name Player extends CharacterController
 
 
 @export var interaction_area: Area2D
-var coins: int = 0
-
 
 
 
@@ -42,14 +40,7 @@ func extract(area_position: Vector2) -> void:
 	if area_position.x > global_position.x:
 		create_tween().tween_property(self, "global_position:x", area_position.x + 15, 2.0)
 		sprite.flip_h = false
-	
-	
 
-
-
-func change_coins(amount: int) -> void:
-	coins += amount
-	E.player_coins_changed.emit(self)
 
 
 func get_input() -> Vector2:
@@ -59,8 +50,7 @@ func get_input() -> Vector2:
 	return Vector2(x, y)
 
 
-
 func _on_interaction_area_area_entered(area: Area2D) -> void:
 	if area is Coin:
 		area.collect()
-		change_coins(1)
+		D.change_coins(1)

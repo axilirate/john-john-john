@@ -14,4 +14,13 @@ func _ready() -> void:
 		E.extraction_animation_finished.emit()
 		animation_player.play("hide")
 		)
+	
+	E.confirmed_upgrades.connect(func():
+		await get_tree().create_timer(0.5).timeout
+		animation_player.play("show")
+		await animation_player.animation_finished
+		E.confirmed_upgrades_animation_finished.emit()
+		animation_player.play("hide")
+	)
+	
 	hide()

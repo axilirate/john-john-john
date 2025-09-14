@@ -2,19 +2,22 @@ class_name Popup2D extends Node2D
 
 @export_group("Nodes")
 @export var margin_container: MarginContainer
-@export var label: Label
+@export var name_label: Label
+@export var description_label: Label
 
 @export_group("") 
-@export_multiline var text: String = ""
+var description_text: String = ""
+var name_text: String = ""
 
 var node_ref: Node2D
 
 
 func _ready() -> void:
 	E.player_entered_extraction_door_area.connect(func(player: Player, extraction_door: ExtractionDoor):
-		text = "Press \"E\" to extract"
-		text += "\n"
-		text += "Extracted: 0/3"
+		name_text = "Press \"E\" to extract"
+		name_text += "\n"
+		name_text += "Extracted: 0/3"
+		description_text = ""
 		update()
 		
 		show_from_node(extraction_door)
@@ -25,6 +28,10 @@ func _ready() -> void:
 		)
 	
 	E.skill_node_mouse_entered.connect(func(skill_node: SkillNode):
+		name_text = skill_node.resource.name
+		description_text = skill_node.resource.description
+		update()
+		
 		show_from_node(skill_node)
 		)
 	
@@ -43,6 +50,7 @@ func _ready() -> void:
 
 
 func show_from_node(arg_node_ref: Node2D) -> void:
+	scale = arg_node_ref.get_viewport().get_camera_2d().zoom
 	node_ref = arg_node_ref
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -75,8 +83,14 @@ func update_position() -> void:
 
 
 func update() -> void:
+	name_label.text = name_text
+	description_label.text = description_text
+	
+	name_label.visible = name_text.length() > 0
+	description_label.visible = description_text.length() > 0
+	
+	await get_tree().process_frame
 	margin_container.size = Vector2.ZERO
-	label.text = text
 	await get_tree().process_frame
 	margin_container.position.x = -(margin_container.size.x * 0.5) - 0.5
 	margin_container.position.y = -margin_container.size.y - 4
