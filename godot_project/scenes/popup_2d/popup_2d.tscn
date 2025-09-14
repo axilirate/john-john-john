@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://oa5pyaoqhvkd"]
 
-[ext_resource type="Texture2D" uid="uid://bu5cknik74p" path="res://assets/textures/world_popup_tip.png" id="1_75p32"]
-[ext_resource type="Script" uid="uid://cr7x3vm7h7xbw" path="res://scenes/world_popup/world_popup.gd" id="1_tera5"]
+[ext_resource type="Script" uid="uid://cr7x3vm7h7xbw" path="res://scenes/popup_2d/popup_2d.gd" id="1_1r2ds"]
+[ext_resource type="Texture2D" uid="uid://bu5cknik74p" path="res://assets/textures/world_popup_tip.png" id="2_huk7n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tera5"]
 bg_color = Color(0, 0, 0, 1)
@@ -23,9 +23,10 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 
-[node name="WorldPopup" type="Node2D" node_paths=PackedStringArray("label")]
+[node name="Popup2D" type="Node2D" node_paths=PackedStringArray("margin_container", "label")]
 z_index = 2
-script = ExtResource("1_tera5")
+script = ExtResource("1_1r2ds")
+margin_container = NodePath("MarginContainer")
 label = NodePath("MarginContainer/MarginContainer2/Label")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -34,9 +35,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -57.0
-offset_top = -38.0
-offset_right = 57.0
+offset_left = -98.0
+offset_top = -43.0
+offset_right = 97.0
 offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -69,4 +70,4 @@ theme_override_constants/margin_bottom = -5
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-texture = ExtResource("1_75p32")
+texture = ExtResource("2_huk7n")

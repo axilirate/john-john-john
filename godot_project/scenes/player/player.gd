@@ -6,6 +6,21 @@ var coins: int = 0
 
 
 
+
+func _ready() -> void:
+	interaction_area.area_entered.connect(func(area: Area2D):
+		if area is ExtractionDoor:
+			E.player_entered_extraction_door_area.emit(self, area)
+		)
+	
+	interaction_area.area_exited.connect(func(area: Area2D):
+		if area is ExtractionDoor:
+			E.player_exited_extraction_door_area.emit(self, area)
+		)
+
+
+
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("interaction"):
 		for area in interaction_area.get_overlapping_areas():

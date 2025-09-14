@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b5dttforcewbf"]
+[gd_scene load_steps=8 format=3 uid="uid://b5dttforcewbf"]
 
 [ext_resource type="PackedScene" uid="uid://cks5b4mtsm7ju" path="res://scenes/world/world.tscn" id="1_wl5b8"]
 [ext_resource type="Texture2D" uid="uid://c26h20xjd6kwh" path="res://assets/textures/coin_ui.png" id="2_6fno2"]
 [ext_resource type="PackedScene" uid="uid://njmeebysbhml" path="res://scenes/skill_tree_container/skill_tree_container.tscn" id="2_aw7j4"]
+[ext_resource type="PackedScene" uid="uid://oa5pyaoqhvkd" path="res://scenes/popup_2d/popup_2d.tscn" id="2_rfvdj"]
 [ext_resource type="PackedScene" uid="uid://de813hk7fvrdy" path="res://scenes/custom_label/custom_label.tscn" id="3_6fno2"]
 [ext_resource type="Script" uid="uid://iiqxibh6vhr8" path="res://scenes/gameplay_state/coins_label.gd" id="4_qeqgj"]
 [ext_resource type="PackedScene" uid="uid://wcc33p7ud12j" path="res://scenes/transition_rect/transition_rect.tscn" id="6_n6ss6"]
@@ -12,6 +13,11 @@
 [node name="World" parent="." instance=ExtResource("1_wl5b8")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Popup2D" parent="CanvasLayer" instance=ExtResource("2_rfvdj")]
+position = Vector2(618, 415)
+scale = Vector2(4, 4)
+text = "test text 123123"
 
 [node name="SkillTreeContainer" parent="CanvasLayer" instance=ExtResource("2_aw7j4")]
 

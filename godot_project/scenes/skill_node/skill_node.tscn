@@ -21,14 +21,15 @@ border_sprite = NodePath("BorderSprite")
 hover_sprite = NodePath("HoverSprite")
 
 [node name="BorderSprite" type="Sprite2D" parent="."]
+modulate = Color(0.5, 0.5, 0.5, 1)
 texture = SubResource("AtlasTexture_ryt63")
+
+[node name="IconSprite" type="Sprite2D" parent="BorderSprite"]
+texture = ExtResource("3_3xgns")
 
 [node name="HoverSprite" type="Sprite2D" parent="."]
 visible = false
 texture = SubResource("AtlasTexture_3xgns")
-
-[node name="IconSprite" type="Sprite2D" parent="."]
-texture = ExtResource("3_3xgns")
 
 [node name="HoverArea" type="Area2D" parent="."]
 collision_mask = 0
