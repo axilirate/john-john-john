@@ -15,8 +15,10 @@ skill_node_holder = NodePath("SkillNodeHolder")
 
 [node name="SkillNode" parent="SkillNodeHolder" instance=ExtResource("1_7utke")]
 resource = ExtResource("3_ynme6")
+cost = 3
 
 [node name="SkillNode2" parent="SkillNodeHolder" node_paths=PackedStringArray("dependency") instance=ExtResource("1_7utke")]
 position = Vector2(61, 0)
 resource = ExtResource("3_ynme6")
 dependency = NodePath("../SkillNode")
+cost = 5

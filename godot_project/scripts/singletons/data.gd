@@ -1,6 +1,8 @@
 extends Node
 
 
+var unlocked_skill_nodes: Array[String] = []
+var active_skills: Array[SkillResource] = []
 var coins: int
 
 
