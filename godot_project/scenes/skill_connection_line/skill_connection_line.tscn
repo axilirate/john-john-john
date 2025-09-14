@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://5f8qglr6h0eq"]
+
+[ext_resource type="Script" uid="uid://cpvinjpykedtd" path="res://scenes/skill_connection_line/skill_connection_line.gd" id="1_2mhh2"]
+
+[node name="SkillConnectionLine" type="Line2D"]
+width = 2.0
+script = ExtResource("1_2mhh2")

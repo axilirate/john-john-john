@@ -3,10 +3,17 @@
 [ext_resource type="PackedScene" uid="uid://bndn645ce51vk" path="res://scenes/skill_node/skill_node.tscn" id="1_7utke"]
 [ext_resource type="Script" uid="uid://ciw4vl52gtmi2" path="res://scenes/skill_tree/skill_tree.gd" id="1_qyvaf"]
 
-[node name="SkillTree" type="Node2D"]
+[node name="SkillTree" type="Node2D" node_paths=PackedStringArray("skill_connection_line_holder", "skill_node_holder")]
 script = ExtResource("1_qyvaf")
+skill_connection_line_holder = NodePath("SkillConnectionLineHolder")
+skill_node_holder = NodePath("SkillNodeHolder")
 
-[node name="SkillNode" parent="." instance=ExtResource("1_7utke")]
+[node name="SkillConnectionLineHolder" type="Node2D" parent="."]
 
-[node name="SkillNode2" parent="." instance=ExtResource("1_7utke")]
-position = Vector2(42, -39)
+[node name="SkillNodeHolder" type="Node2D" parent="."]
+
+[node name="SkillNode" parent="SkillNodeHolder" instance=ExtResource("1_7utke")]
+
+[node name="SkillNode2" parent="SkillNodeHolder" node_paths=PackedStringArray("dependency") instance=ExtResource("1_7utke")]
+position = Vector2(61, 0)
+dependency = NodePath("../SkillNode")

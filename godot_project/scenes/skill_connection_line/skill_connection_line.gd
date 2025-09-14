@@ -1,0 +1,1 @@
+class_name SkillConnectionLine extends Line2D

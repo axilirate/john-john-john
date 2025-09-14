@@ -14,7 +14,6 @@
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="SkillTreeContainer" parent="CanvasLayer" instance=ExtResource("2_aw7j4")]
-visible = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
 offset_left = 11.0
