@@ -7,6 +7,7 @@ class_name EscScreen extends MarginContainer
 
 func _ready() -> void:
 	restart_button.pressed.connect(func(): E.restart_button_pressed.emit())
+	E.player_died.connect(func(_player: Player): hide())
 
 
 func _input(event: InputEvent) -> void:

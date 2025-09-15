@@ -9,7 +9,7 @@ func _ready() -> void:
 	E.confirmed_upgrades_animation_finished.connect(restart_world)
 	E.skill_node_pressed.connect(_on_skill_node_pressed)
 	
-	E.player_died.connect(func():
+	E.player_died.connect(func(_player: Player):
 		if D.coin_bag_to_spawn_coins == 0:
 			D.collected_coins.clear()
 		

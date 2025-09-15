@@ -33,6 +33,9 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("interaction"):
+		if not is_on_floor():
+			return
+		
 		for area in interaction_area.get_overlapping_areas():
 			var extraction_door: ExtractionDoor
 			if area is ExtractionDoor:
@@ -86,7 +89,7 @@ func die() -> void:
 	animation_tree.active = false
 	animation_player.play("die")
 	add_state(State.DEAD)
-	E.player_died.emit()
+	E.player_died.emit(self)
 	
 	await animation_player.animation_finished
 	hide()
