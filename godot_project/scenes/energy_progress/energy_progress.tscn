@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://cthne5xqfa768"]
+
+[ext_resource type="Texture2D" uid="uid://brgeaaxjlhva6" path="res://assets/textures/energy_ui.png" id="1_4k7tt"]
+[ext_resource type="Script" uid="uid://if5q0q4hhtmk" path="res://scenes/energy_progress/energy_progress.gd" id="1_ja2hp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4k7tt"]
+atlas = ExtResource("1_4k7tt")
+region = Rect2(0, 0, 9, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqw5i"]
+resource_local_to_scene = true
+atlas = ExtResource("1_4k7tt")
+region = Rect2(10, 1, 7, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwpnc"]
+resource_local_to_scene = true
+atlas = ExtResource("1_4k7tt")
+region = Rect2(19, 1, 7, 10)
+
+[node name="EnergyProgress" type="MarginContainer" node_paths=PackedStringArray("bar")]
+offset_right = 21.0
+offset_bottom = 30.0
+script = ExtResource("1_ja2hp")
+bar = NodePath("EnergyProgress")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(27, 39)
+layout_mode = 2
+texture = SubResource("AtlasTexture_4k7tt")
+
+[node name="EnergyProgress" type="TextureProgressBar" parent="."]
+custom_minimum_size = Vector2(21, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 10.0
+value = 5.0
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = SubResource("AtlasTexture_tqw5i")
+texture_progress = SubResource("AtlasTexture_cwpnc")

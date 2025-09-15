@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3gew7nh7qhlc"]
+
+[ext_resource type="Script" uid="uid://cgxfxwr550agm" path="res://scenes/energy_container/energy_container.gd" id="1_bklr3"]
+[ext_resource type="PackedScene" uid="uid://cthne5xqfa768" path="res://scenes/energy_progress/energy_progress.tscn" id="2_ii48s"]
+
+[node name="EnergyContainer" type="HBoxContainer"]
+size_flags_horizontal = 0
+script = ExtResource("1_bklr3")
+
+[node name="EnergyProgress" parent="." instance=ExtResource("2_ii48s")]
+layout_mode = 2
+
+[node name="EnergyProgress2" parent="." instance=ExtResource("2_ii48s")]
+layout_mode = 2
+
+[node name="EnergyProgress3" parent="." instance=ExtResource("2_ii48s")]
+layout_mode = 2

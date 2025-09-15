@@ -1,11 +1,13 @@
 class_name Player extends CharacterBody2D
 
 enum State {
-	HARD_FALL
+	HARD_FALL,
+	DEAD,
 	}
 
 
 @export_group("Nodes")
+@export var animation_player: AnimationPlayer
 @export var animation_tree: AnimationTree
 @export var interaction_area: Area2D
 @export var sprite: Sprite2D
@@ -20,13 +22,7 @@ var states: Array[State] = []
 var animating: bool = false
 
 
-
 func _ready() -> void:
-	interaction_area.area_entered.connect(func(area: Area2D):
-		if area is ExtractionDoor:
-			E.player_entered_extraction_door_area.emit(self, area)
-		)
-	
 	interaction_area.area_exited.connect(func(area: Area2D):
 		if area is ExtractionDoor:
 			E.player_exited_extraction_door_area.emit(self, area)
@@ -54,9 +50,14 @@ func _input(event: InputEvent) -> void:
 
 
 
+
 func _physics_process(delta: float) -> void:
+	if states.has(State.DEAD):
+		return
+	
 	if not animating:
 		process_last_input.call_deferred()
+		process_energy(delta)
 		
 		process_air_time(delta)
 		process_hard_fall()
@@ -69,14 +70,35 @@ func _physics_process(delta: float) -> void:
 
 
 
+
 func add_state(state: State) -> void:
 	if states.has(state):
 		return
 	states.push_back(state)
 
 
+func die() -> void:
+	D.coin_bag_to_spawn_position = global_position
+	D.coin_bag_to_spawn_coins = D.collected_coins
+	animation_tree.active = false
+	animation_player.play("die")
+	add_state(State.DEAD)
+	E.player_died.emit()
+	
+	await animation_player.animation_finished
+	hide()
+
+
 func process_last_input() -> void:
 	last_input = get_input()
+
+
+
+
+func process_energy(delta: float) -> void:
+	D.change_curr_energy(-delta)
+	if D.player_curr_energy <= 0:
+		die()
 
 
 func process_air_time(delta) -> void:
@@ -215,6 +237,13 @@ func get_input() -> Vector2:
 
 
 func _on_interaction_area_area_entered(area: Area2D) -> void:
+	if area is ExtractionDoor:
+		E.player_entered_extraction_door_area.emit(self, area)
+	
 	if area is Coin:
 		area.collect()
 		D.change_collected_coins(1)
+	
+	if area is CoinBag:
+		area.collect()
+		D.change_collected_coins(area.coins)
