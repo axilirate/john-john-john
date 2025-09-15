@@ -12,7 +12,8 @@ func collect() -> void:
 	var t1 = create_tween().tween_property(self, "global_position:y", global_position.y + 2, 0.1)
 	await t1.finished
 	create_tween().tween_property(self, "global_position:y", global_position.y - 5, collection_time)
-	create_tween().tween_property(self, "modulate:a", 0, collection_time).set_ease(Tween.EASE_OUT)
+	await get_tree().create_timer(0.1).timeout
+	create_tween().tween_property(self, "modulate:a", 0, collection_time - 0.1).set_ease(Tween.EASE_OUT)
 	await get_tree().create_timer(collection_time).timeout
 	hide()
 	queue_free()

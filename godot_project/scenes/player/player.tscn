@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://biu5bs6cpi32d"]
+[gd_scene load_steps=24 format=3 uid="uid://biu5bs6cpi32d"]
 
 [ext_resource type="Script" uid="uid://cj55dpjoqd0mk" path="res://scenes/player/player.gd" id="1_g0h32"]
 [ext_resource type="Texture2D" uid="uid://b55rb2kqpdnt0" path="res://assets/textures/player.png" id="2_4l7gt"]
@@ -27,14 +27,16 @@ animation = &"idle"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_xbgf7"]
 
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_gmlin"]
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4861o"]
-graph_offset = Vector2(-669.257, 30.662)
+graph_offset = Vector2(-861.238, -10.2845)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_40tew")
 nodes/Animation/position = Vector2(-700, 80)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_orkpe")
 "nodes/Animation 2/position" = Vector2(-700, 640)
 "nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_0rhra")
-"nodes/Animation 3/position" = Vector2(-700, 220)
+"nodes/Animation 3/position" = Vector2(-1020, 220)
 "nodes/Animation 4/node" = SubResource("AnimationNodeAnimation_ofskh")
 "nodes/Animation 4/position" = Vector2(-700, 360)
 "nodes/Animation 5/node" = SubResource("AnimationNodeAnimation_4aen7")
@@ -48,7 +50,9 @@ nodes/air_jump_one_shot/position = Vector2(-220, 80)
 nodes/output/position = Vector2(-20, 80)
 nodes/run_blend/node = SubResource("AnimationNodeBlend2_xbgf7")
 nodes/run_blend/position = Vector2(-540, 80)
-node_connections = [&"air_blend", 0, &"run_blend", &"air_blend", 1, &"Animation 4", &"air_jump_blend", 0, &"Animation 5", &"air_jump_blend", 1, &"Animation 2", &"air_jump_one_shot", 0, &"air_blend", &"air_jump_one_shot", 1, &"air_jump_blend", &"output", 0, &"air_jump_one_shot", &"run_blend", 0, &"Animation", &"run_blend", 1, &"Animation 3"]
+nodes/run_time_scale/node = SubResource("AnimationNodeTimeScale_gmlin")
+nodes/run_time_scale/position = Vector2(-860, 220)
+node_connections = [&"air_blend", 0, &"run_blend", &"air_blend", 1, &"Animation 4", &"air_jump_blend", 0, &"Animation 5", &"air_jump_blend", 1, &"Animation 2", &"air_jump_one_shot", 0, &"air_blend", &"air_jump_one_shot", 1, &"air_jump_blend", &"output", 0, &"air_jump_one_shot", &"run_blend", 0, &"Animation", &"run_blend", 1, &"run_time_scale", &"run_time_scale", 0, &"Animation 3"]
 
 [sub_resource type="Animation" id="Animation_4hrxe"]
 length = 0.001
@@ -200,12 +204,12 @@ size = Vector2(6, 7)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(8, 9)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("interaction_area", "animation_tree", "sprite")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animation_tree", "interaction_area", "sprite")]
 physics_interpolation_mode = 1
 collision_mask = 3
 script = ExtResource("1_g0h32")
-interaction_area = NodePath("InteractionArea")
 animation_tree = NodePath("AnimationTree")
+interaction_area = NodePath("InteractionArea")
 sprite = NodePath("Sprite")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -216,7 +220,8 @@ parameters/air_jump_blend/blend_amount = 0.0
 parameters/air_jump_one_shot/active = false
 parameters/air_jump_one_shot/internal_active = false
 parameters/air_jump_one_shot/request = 0
-parameters/run_blend/blend_amount = 0.0
+parameters/run_blend/blend_amount = 1.0
+parameters/run_time_scale/scale = 1.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

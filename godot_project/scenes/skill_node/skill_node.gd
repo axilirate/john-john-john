@@ -14,6 +14,11 @@ var hovering: bool = false
 
 
 func _ready() -> void:
+	E.skill_node_unlocked.connect(func():
+		if D.unlocked_skill_nodes.has(name):
+			border_sprite.modulate = resource.color
+		)
+	
 	if is_instance_valid(resource):
 		icon_sprite.texture = resource.icon
 	hover_sprite.hide()
@@ -21,8 +26,8 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.pressed:
-			pass
+		if event.pressed and hovering:
+			E.skill_node_pressed.emit(self)
 
 
 

@@ -18,9 +18,15 @@ var node_ref: Node2D
 
 func _ready() -> void:
 	E.player_entered_extraction_door_area.connect(func(player: Player, extraction_door: ExtractionDoor):
+		if not extraction_door.can_extract():
+			return
+		
 		name_text = "Press \"E\" to extract"
 		name_text += "\n"
-		name_text += "Extracted: 0/3"
+		name_text += "Extracted: "
+		name_text += str(D.get_extracted_door_coins(extraction_door))
+		name_text += "/"
+		name_text += str(extraction_door.max_extraction)
 		description_text = ""
 		cost = 0
 		update()
@@ -33,12 +39,12 @@ func _ready() -> void:
 		)
 	
 	E.skill_node_mouse_entered.connect(func(skill_node: SkillNode):
-		name_text = skill_node.resource.name
-		description_text = skill_node.resource.description
-		cost = skill_node.cost
-		update()
-		
+		update_from_skill_node(skill_node)
 		show_from_node(skill_node)
+		)
+	
+	E.skill_node_unlocked.connect(func():
+		update_from_skill_node(node_ref)
 		)
 	
 	E.skill_node_mouse_exited.connect(func(skill_node: SkillNode):
@@ -53,6 +59,21 @@ func _ready() -> void:
 	
 	update()
 	hide()
+
+
+
+func update_from_skill_node(skill_node: SkillNode) -> void:
+	if not is_instance_valid(skill_node):
+		return
+	
+	name_text = skill_node.resource.name
+	description_text = skill_node.resource.description
+	cost = 0
+	if not D.unlocked_skill_nodes.has(skill_node.name):
+		cost = skill_node.cost
+	
+	update()
+
 
 
 func show_from_node(arg_node_ref: Node2D) -> void:
@@ -99,6 +120,7 @@ func update() -> void:
 	
 	await get_tree().process_frame
 	margin_container.size = Vector2.ZERO
-	await get_tree().process_frame
+	margin_container.item_rect_changed.emit()
+	
 	margin_container.position.x = -(margin_container.size.x * 0.5) - 0.5
 	margin_container.position.y = -margin_container.size.y - 4

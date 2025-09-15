@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b618h2ars7srr" path="res://assets/textures/door.png" id="1_wck03"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jh831"]
+resource_local_to_scene = true
 atlas = ExtResource("1_wck03")
 region = Rect2(11, 0, 11, 11)
 
@@ -14,12 +15,13 @@ size = Vector2(14, 10)
 atlas = ExtResource("1_wck03")
 region = Rect2(22, 0, 22, 11)
 
-[node name="ExtractionDoor" type="Area2D" node_paths=PackedStringArray("wall_sprite_left", "wall_sprite_right")]
+[node name="ExtractionDoor" type="Area2D" node_paths=PackedStringArray("wall_sprite_left", "wall_sprite_right", "door_sprite")]
 script = ExtResource("1_gpqa8")
 wall_sprite_left = NodePath("WallSpriteLeft")
 wall_sprite_right = NodePath("WallSpriteRight")
+door_sprite = NodePath("DoorSprite")
 
-[node name="Door" type="Sprite2D" parent="."]
+[node name="DoorSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -5.5)
 texture = SubResource("AtlasTexture_jh831")
 

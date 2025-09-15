@@ -9,6 +9,7 @@ var skill_connection_lines: Dictionary[SkillNode, SkillConnectionLine] = {}
 
 
 func _ready() -> void:
+	E.skill_node_unlocked.connect(func(): update())
 	update()
 
 
@@ -19,7 +20,12 @@ func update() -> void:
 		if child is SkillNode:
 			skill_node = child as SkillNode
 		
+		skill_node.show()
 		if not is_instance_valid(skill_node.dependency):
+			continue
+		
+		if not D.unlocked_skill_nodes.has(skill_node.dependency.name):
+			skill_node.hide()
 			continue
 		
 		if not skill_connection_lines.has(skill_node):

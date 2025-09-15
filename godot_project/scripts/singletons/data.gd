@@ -1,14 +1,52 @@
 extends Node
 
-
-var unlocked_skill_nodes: Array[String] = []
+var extractions: Dictionary[StringName, int] = {}
+var unlocked_skill_nodes: Array[StringName] = []
 var active_skills: Array[SkillResource] = []
-var coins: int
+var collected_coins: int = 0
+var extracted_coins: int = 0
+
+
+# Player
+var player_jump_power: float = 85.0
+var player_speed: float = 25.0
 
 
 
+func extract(extraction_door: ExtractionDoor) -> void:
+	if not extractions.has(extraction_door.name):
+		extractions[extraction_door.name] = 0
+	
+	var max_amount: int = extraction_door.max_extraction - extractions[extraction_door.name]
+	var extracted_amount: int = mini(max_amount, collected_coins)
+	extractions[extraction_door.name] += extracted_amount
+	change_collected_coins(-extracted_amount)
+	change_extracted_coins(extracted_amount)
 
 
-func change_coins(amount: int) -> void:
-	D.coins += amount
+
+func unlock_skill_node(skill_node: SkillNode) -> void:
+	if not unlocked_skill_nodes.has(skill_node.name):
+		unlocked_skill_nodes.push_back(skill_node.name)
+	active_skills.push_back(skill_node.resource)
+	
+	if is_instance_valid(skill_node.resource.upgrade_script):
+		skill_node.resource.upgrade_script.new()
+	
+	E.skill_node_unlocked.emit()
+
+
+func change_collected_coins(amount: int) -> void:
+	D.collected_coins += amount
 	E.coins_changed.emit()
+
+func change_extracted_coins(amount: int) -> void:
+	D.extracted_coins += amount
+	E.coins_changed.emit()
+
+
+
+func get_extracted_door_coins(extraction_door: ExtractionDoor) -> int:
+	if not extractions.has(extraction_door.name):
+		return 0
+	return extractions[extraction_door.name]

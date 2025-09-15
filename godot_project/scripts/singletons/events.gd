@@ -1,6 +1,7 @@
 extends Node
 
 # Data
+signal skill_node_unlocked
 signal coins_changed
 
 # Player
@@ -11,6 +12,7 @@ signal player_extracted(player: Player)
 # SkillNode
 signal skill_node_mouse_entered(skill_node: SkillNode)
 signal skill_node_mouse_exited(skill_node: SkillNode)
+signal skill_node_pressed(skill_node: SkillNode)
 
 
 signal confirmed_upgrades_animation_finished

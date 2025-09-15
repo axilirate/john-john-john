@@ -8,16 +8,16 @@ class_name CustomLabel extends Label
 
 
 func _ready() -> void:
-	update()
+	update_visuals()
 
 
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
 		return
-	update()
+	update_visuals()
 
 
-func update() -> void:
+func update_visuals() -> void:
 	for idx in get_child_count():
 		var child = get_child(idx)
 		if child is Label:
@@ -48,4 +48,4 @@ func update() -> void:
 
 func apply_text(new_text: String) -> void:
 	text = new_text
-	update()
+	update_visuals()

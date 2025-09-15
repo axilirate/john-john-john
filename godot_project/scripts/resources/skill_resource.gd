@@ -6,3 +6,4 @@ class_name SkillResource extends Resource
 @export var icon: Texture2D
 @export var color: Color
 @export_multiline var description: String
+@export var upgrade_script: GDScript

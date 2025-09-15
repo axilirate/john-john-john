@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dmrcgqgmvm22o"
-path="res://.godot/imported/jump_height.png-974f2edb2a9719276ade69ce290e9cb3.ctex"
+path="res://.godot/imported/jump_higher_icon.png-59942e368631800d90f2211edc71a66c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/skill_icons/jump_height.png"
-dest_files=["res://.godot/imported/jump_height.png-974f2edb2a9719276ade69ce290e9cb3.ctex"]
+source_file="res://assets/textures/skill_icons/jump_higher_icon.png"
+dest_files=["res://.godot/imported/jump_higher_icon.png-59942e368631800d90f2211edc71a66c.ctex"]
 
 [params]
 
