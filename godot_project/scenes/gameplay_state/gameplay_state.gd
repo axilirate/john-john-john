@@ -10,6 +10,9 @@ func _ready() -> void:
 	E.skill_node_pressed.connect(_on_skill_node_pressed)
 	
 	E.player_died.connect(func():
+		if D.coin_bag_to_spawn_coins == 0:
+			D.collected_coins.clear()
+		
 		await get_tree().create_timer(1.5).timeout
 		restart_world()
 		)
@@ -25,7 +28,7 @@ func restart_world() -> void:
 	remove_child(world)
 	world.queue_free()
 	
-	D.reset_collected_coins()
+	D.reset_temp_coins()
 	D.reset_energy()
 	
 	world = WORLD_SCENE.instantiate()

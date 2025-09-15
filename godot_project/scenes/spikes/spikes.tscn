@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsrtejq5u3bcf"]
+
+[ext_resource type="Texture2D" uid="uid://cfa8l7k5rmf1" path="res://assets/textures/spikes.png" id="1_1dqlq"]
+[ext_resource type="Script" uid="uid://cllyfjk0hr4gj" path="res://scenes/spikes/spikes.gd" id="1_2aga5"]
+
+[node name="Spikes" type="StaticBody2D"]
+script = ExtResource("1_2aga5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.705882, 0.12549, 0.164706, 1)
+position = Vector2(0, -2)
+texture = ExtResource("1_1dqlq")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-4, 0, -4, -2, -3, -2, -3, -3, 4, -3, 4, 0)

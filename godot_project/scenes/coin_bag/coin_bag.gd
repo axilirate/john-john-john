@@ -3,16 +3,19 @@ class_name CoinBag extends Area2D
 
 @export var animation_player: AnimationPlayer
 @export var ray_cast: RayCast2D
+@export var sprite: Sprite2D
 
 var coins: int
 
+
+func _ready() -> void:
+	Pixel.snap(sprite)
 
 
 func _physics_process(delta: float) -> void:
 	if not ray_cast.is_colliding():
 		return
 	global_position.y = ray_cast.get_collision_point().y
-	print(ray_cast.get_collision_point())
 
 
 func collect() -> void:

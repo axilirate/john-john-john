@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://w7p2d3sdm84y"]
+
+[ext_resource type="Script" uid="uid://d2jfku4lpamij" path="res://scenes/esc_screen/esc_screen.gd" id="1_xyqcq"]
+
+[node name="EscScreen" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xyqcq")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RestartButton" type="Button" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "RESTART"

@@ -1,0 +1,1 @@
+class_name Spikes extends StaticBody2D

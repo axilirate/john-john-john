@@ -3,8 +3,9 @@ extends Node
 var extractions: Dictionary[StringName, int] = {}
 var unlocked_skill_nodes: Array[StringName] = []
 var active_skills: Array[SkillResource] = []
-var collected_coins: int = 0
+var collected_coins: Array[StringName] = []
 var extracted_coins: int = 0
+var temp_coins: int = 0
 
 
 # Player
@@ -26,10 +27,11 @@ func extract(extraction_door: ExtractionDoor) -> void:
 		extractions[extraction_door.name] = 0
 	
 	var max_amount: int = extraction_door.max_extraction - extractions[extraction_door.name]
-	var extracted_amount: int = mini(max_amount, collected_coins)
+	var extracted_amount: int = mini(max_amount, temp_coins)
 	extractions[extraction_door.name] += extracted_amount
-	change_collected_coins(-extracted_amount)
+	change_temp_coins(-extracted_amount)
 	change_extracted_coins(extracted_amount)
+	D.collected_coins.clear()
 	reset_energy()
 
 
@@ -45,16 +47,16 @@ func unlock_skill_node(skill_node: SkillNode) -> void:
 	E.skill_node_unlocked.emit()
 
 
-func change_collected_coins(amount: int) -> void:
-	D.collected_coins += amount
+func change_temp_coins(amount: int) -> void:
+	temp_coins += amount
 	E.coins_changed.emit()
 
 func change_extracted_coins(amount: int) -> void:
 	D.extracted_coins += amount
 	E.coins_changed.emit()
 
-func reset_collected_coins() -> void:
-	collected_coins = 0
+func reset_temp_coins() -> void:
+	temp_coins = 0
 	E.coins_changed.emit()
 
 func reset_energy() -> void:

@@ -23,6 +23,7 @@ var animating: bool = false
 
 
 func _ready() -> void:
+	E.restart_button_pressed.connect(func(): die())
 	interaction_area.area_exited.connect(func(area: Area2D):
 		if area is ExtractionDoor:
 			E.player_exited_extraction_door_area.emit(self, area)
@@ -54,7 +55,7 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if states.has(State.DEAD):
 		return
-	
+		
 	if not animating:
 		process_last_input.call_deferred()
 		process_energy(delta)
@@ -63,6 +64,8 @@ func _physics_process(delta: float) -> void:
 		process_hard_fall()
 		
 		process_velocity(delta)
+		var collision: KinematicCollision2D = move_and_collide(velocity * delta, true)
+		process_collision(collision)
 		move_and_slide()
 	
 	
@@ -79,7 +82,7 @@ func add_state(state: State) -> void:
 
 func die() -> void:
 	D.coin_bag_to_spawn_position = global_position
-	D.coin_bag_to_spawn_coins = D.collected_coins
+	D.coin_bag_to_spawn_coins = D.temp_coins
 	animation_tree.active = false
 	animation_player.play("die")
 	add_state(State.DEAD)
@@ -132,6 +135,7 @@ func process_velocity(delta) -> void:
 
 
 
+
 func process_gravity() -> void:
 	velocity.y += World.gravity
 	
@@ -150,6 +154,14 @@ func process_jump(delta) -> void:
 		if velocity.y < 0 and states.has(State.HARD_FALL):
 			velocity.y = lerp(velocity.y, 0.0, delta * 25)
 
+
+
+func process_collision(collision: KinematicCollision2D) -> void:
+	if not is_instance_valid(collision):
+		return
+	
+	if collision.get_collider() is Spikes:
+		die()
 
 
 func process_horizontal_movement() -> void:
@@ -177,7 +189,7 @@ func process_sprite() -> void:
 		sprite.global_position.y = round(sprite.global_position.y) + 0.5
 	
 	if is_equal_approx(velocity.x, 0.0) and not animating:
-		sprite.global_position.x = round(sprite.global_position.x)
+		Pixel.snap(sprite)
 	
 	sprite.flip_h = flipped
 	sprite.offset.x = 0
@@ -241,9 +253,10 @@ func _on_interaction_area_area_entered(area: Area2D) -> void:
 		E.player_entered_extraction_door_area.emit(self, area)
 	
 	if area is Coin:
+		D.collected_coins.push_back(area.name)
+		D.change_temp_coins(1)
 		area.collect()
-		D.change_collected_coins(1)
 	
 	if area is CoinBag:
 		area.collect()
-		D.change_collected_coins(area.coins)
+		D.change_temp_coins(area.coins)

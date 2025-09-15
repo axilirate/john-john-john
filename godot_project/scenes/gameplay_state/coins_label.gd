@@ -2,9 +2,9 @@
 class_name CoinsLabel extends CustomLabel
 
 
-enum CoinType {COLLECTED, EXTRACTED}
+enum CoinType {TEMP, EXTRACTED}
 
-var curr_coin_type: CoinType = CoinType.COLLECTED
+var curr_coin_type: CoinType = CoinType.TEMP
 
 
 func _ready() -> void:
@@ -15,7 +15,7 @@ func _ready() -> void:
 		)
 	
 	E.confirmed_upgrades_animation_finished.connect(func():
-		curr_coin_type = CoinType.COLLECTED
+		curr_coin_type = CoinType.TEMP
 		update()
 		)
 	
@@ -25,5 +25,5 @@ func _ready() -> void:
 func update() -> void:
 	match curr_coin_type:
 		CoinType.EXTRACTED: text = str(D.extracted_coins)
-		CoinType.COLLECTED: text = str(D.collected_coins)
+		CoinType.TEMP: text = str(D.temp_coins)
 	

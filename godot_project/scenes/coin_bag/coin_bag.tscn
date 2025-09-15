@@ -69,13 +69,14 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sgnct"]
 size = Vector2(8, 11)
 
-[node name="CoinBag" type="Area2D" node_paths=PackedStringArray("animation_player", "ray_cast")]
+[node name="CoinBag" type="Area2D" node_paths=PackedStringArray("animation_player", "ray_cast", "sprite")]
 script = ExtResource("1_sgnct")
 animation_player = NodePath("AnimationPlayer")
 ray_cast = NodePath("RayCast2D")
+sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 0.596078, 0.0509804, 1)
+modulate = Color(0.733333, 0.458824, 0.278431, 1)
 position = Vector2(0, -4)
 texture = ExtResource("1_n03kf")
 offset = Vector2(0, -1)

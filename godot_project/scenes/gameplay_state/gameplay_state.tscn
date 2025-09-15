@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b5dttforcewbf"]
+[gd_scene load_steps=11 format=3 uid="uid://b5dttforcewbf"]
 
 [ext_resource type="Script" uid="uid://derqcdcwq7tuv" path="res://scenes/gameplay_state/gameplay_state.gd" id="1_vgepn"]
 [ext_resource type="PackedScene" uid="uid://cks5b4mtsm7ju" path="res://scenes/world/world.tscn" id="1_wl5b8"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://iiqxibh6vhr8" path="res://scenes/gameplay_state/coins_label.gd" id="4_qeqgj"]
 [ext_resource type="PackedScene" uid="uid://b3gew7nh7qhlc" path="res://scenes/energy_container/energy_container.tscn" id="5_tqw5i"]
 [ext_resource type="PackedScene" uid="uid://wcc33p7ud12j" path="res://scenes/transition_rect/transition_rect.tscn" id="6_n6ss6"]
+[ext_resource type="PackedScene" uid="uid://w7p2d3sdm84y" path="res://scenes/esc_screen/esc_screen.tscn" id="10_cwpnc"]
 
 [node name="GameplayState" type="Node" node_paths=PackedStringArray("world")]
 script = ExtResource("1_vgepn")
@@ -68,3 +69,6 @@ script = ExtResource("4_qeqgj")
 shadow_color = Color(0, 0, 0, 1)
 
 [node name="TransitionRect" parent="CanvasLayer" instance=ExtResource("6_n6ss6")]
+
+[node name="EscScreen" parent="CanvasLayer" instance=ExtResource("10_cwpnc")]
+visible = false
