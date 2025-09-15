@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b5dttforcewbf"]
+[gd_scene load_steps=12 format=3 uid="uid://b5dttforcewbf"]
 
 [ext_resource type="Script" uid="uid://derqcdcwq7tuv" path="res://scenes/gameplay_state/gameplay_state.gd" id="1_vgepn"]
 [ext_resource type="PackedScene" uid="uid://cks5b4mtsm7ju" path="res://scenes/world/world.tscn" id="1_wl5b8"]
@@ -7,7 +7,18 @@
 [ext_resource type="PackedScene" uid="uid://oa5pyaoqhvkd" path="res://scenes/popup_2d/popup_2d.tscn" id="2_rfvdj"]
 [ext_resource type="PackedScene" uid="uid://de813hk7fvrdy" path="res://scenes/custom_label/custom_label.tscn" id="3_6fno2"]
 [ext_resource type="Script" uid="uid://iiqxibh6vhr8" path="res://scenes/gameplay_state/coins_label.gd" id="4_qeqgj"]
+[ext_resource type="Texture2D" uid="uid://brgeaaxjlhva6" path="res://assets/textures/energy_ui.png" id="5_tqw5i"]
 [ext_resource type="PackedScene" uid="uid://wcc33p7ud12j" path="res://scenes/transition_rect/transition_rect.tscn" id="6_n6ss6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqw5i"]
+resource_local_to_scene = true
+atlas = ExtResource("5_tqw5i")
+region = Rect2(0, 0, 9, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwpnc"]
+resource_local_to_scene = true
+atlas = ExtResource("5_tqw5i")
+region = Rect2(9, 0, 9, 13)
 
 [node name="GameplayState" type="Node" node_paths=PackedStringArray("world")]
 script = ExtResource("1_vgepn")
@@ -23,25 +34,68 @@ scale = Vector2(4, 4)
 
 [node name="SkillTreeContainer" parent="CanvasLayer" instance=ExtResource("2_aw7j4")]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
-offset_left = 11.0
-offset_top = 11.0
-offset_right = 78.0
-offset_bottom = 59.0
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="EnergyContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="EnergyProgress" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer/EnergyContainer"]
+custom_minimum_size = Vector2(27, 39)
+layout_mode = 2
+value = 100.0
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = SubResource("AtlasTexture_tqw5i")
+texture_progress = SubResource("AtlasTexture_cwpnc")
+
+[node name="EnergyProgress2" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer/EnergyContainer"]
+custom_minimum_size = Vector2(24, 39)
+layout_mode = 2
+value = 100.0
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = SubResource("AtlasTexture_tqw5i")
+texture_progress = SubResource("AtlasTexture_cwpnc")
+
+[node name="EnergyProgress3" type="TextureProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer/EnergyContainer"]
+custom_minimum_size = Vector2(24, 39)
+layout_mode = 2
+value = 50.0
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = SubResource("AtlasTexture_tqw5i")
+texture_progress = SubResource("AtlasTexture_cwpnc")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+layout_mode = 2
 theme_override_constants/separation = 7
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HBoxContainer"]
+[node name="CoinsTextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
 modulate = Color(1, 0.596078, 0.0509804, 1)
 custom_minimum_size = Vector2(24, 33)
 layout_mode = 2
 texture = ExtResource("2_6fno2")
 stretch_mode = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_top = -12
+theme_override_constants/margin_top = -6
 
-[node name="CoinsLabel" parent="CanvasLayer/HBoxContainer/MarginContainer" instance=ExtResource("3_6fno2")]
+[node name="CoinsLabel" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer" instance=ExtResource("3_6fno2")]
 modulate = Color(1, 0.596078, 0.0509804, 1)
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
