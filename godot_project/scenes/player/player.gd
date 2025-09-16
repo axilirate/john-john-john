@@ -12,9 +12,9 @@ enum Cooldown {
 }
 
 
+const TARGET_CONTROL: float = 750.0
 const DASH_DURATION: float = 0.15
 const DASH_FORCE: float = 245.0
-
 
 @export_group("Nodes")
 @export var animation_player: AnimationPlayer
@@ -27,6 +27,7 @@ var dash_direction: Vector2 = Vector2.ZERO
 var last_input: Vector2 = get_input()
 var coyote_time: float = 0.1
 
+var control: float = TARGET_CONTROL
 var dash_time: float = 0.0
 var air_time: float = 0.0
 
@@ -75,7 +76,9 @@ func _physics_process(delta: float) -> void:
 		process_cooldowns(delta)
 		process_energy(delta)
 		
+		
 		process_air_time(delta)
+		process_control(delta)
 		process_hard_fall()
 		
 		process_velocity(delta)
@@ -133,6 +136,9 @@ func process_air_time(delta) -> void:
 	air_time += delta
 
 
+func process_control(delta: float) -> void:
+	control = move_toward(control, 750.0, delta * 275.0)
+
 
 func process_hard_fall() -> void:
 	if is_on_floor():
@@ -152,11 +158,10 @@ func process_visuals(delta) -> void:
 
 
 func process_velocity(delta) -> void:
-	process_horizontal_movement()
+	process_horizontal_movement(delta)
 	process_gravity()
 	process_jump(delta)
 	process_dash(delta)
-
 
 
 
@@ -203,6 +208,7 @@ func try_to_dash() -> void:
 	cooldowns[Cooldown.DASH] = D.player_dash_cd
 	add_state(State.DASH)
 	dash_time = 0.0
+	control = 0.0
 
 
 
@@ -218,9 +224,10 @@ func process_collision(collision: KinematicCollision2D) -> void:
 
 
 
-func process_horizontal_movement() -> void:
+func process_horizontal_movement(delta: float) -> void:
 	var input: Vector2 = get_input()
-	velocity.x = input.x * D.player_speed
+	var target_velocity: float = input.x * D.player_speed
+	velocity.x = move_toward(velocity.x, target_velocity, delta * control)
 
 
 
@@ -294,13 +301,13 @@ func process_ghost_trail() -> void:
 	
 	if cooldowns[Cooldown.GHOST_TRAIL] > 0.0:
 		return
-	cooldowns[Cooldown.GHOST_TRAIL] = 0.045
+	cooldowns[Cooldown.GHOST_TRAIL] = 0.025
 	
 	var ghost_trail: Sprite2D = sprite.duplicate()
 	ghost_trail.set_script(preload("res://scripts/nodes/ghost_trail.gd"))
 	ghost_trail = ghost_trail as GhostTrail
 	ghost_trail.global_position = sprite.global_position
-	ghost_trail.scale = Vector2(0.9, 0.9)
+	ghost_trail.scale = Vector2(0.1, 0.1)
 	ghost_trail.top_level = true
 	await get_tree().create_timer(0.03).timeout
 	add_child(ghost_trail)
@@ -333,6 +340,8 @@ func extract(area_position: Vector2) -> void:
 	if area_position.x > global_position.x:
 		create_tween().tween_property(self, "global_position:x", area_position.x + 15, 2.0)
 		sprite.flip_h = false
+
+
 
 
 
