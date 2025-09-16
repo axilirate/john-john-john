@@ -10,9 +10,6 @@ func _ready() -> void:
 	E.skill_node_pressed.connect(_on_skill_node_pressed)
 	
 	E.player_died.connect(func(_player: Player):
-		if D.coin_bag_to_spawn_coins == 0:
-			D.collected_coins.clear()
-		
 		await get_tree().create_timer(1.5).timeout
 		restart_world()
 		)

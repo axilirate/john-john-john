@@ -1,11 +1,12 @@
 extends Node
 
-var extractions: Dictionary[StringName, int] = {}
 var unlocked_skill_nodes: Array[StringName] = []
 var active_skills: Array[SkillResource] = []
-var collected_coins: Array[StringName] = []
 var extracted_coins: int = 0
 var temp_coins: int = 0
+
+var temp_collected_coins: Array[StringName] = []
+var collected_coins: Array[StringName] = []
 
 
 # Player
@@ -16,22 +17,15 @@ var player_jump_power: float = 85.0
 var player_speed: float = 25.0
 
 
-# Coin Bag
-var coin_bag_to_spawn_position: Vector2
-var coin_bag_to_spawn_coins: int = 0
-
 
 
 func extract(extraction_door: ExtractionDoor) -> void:
-	if not extractions.has(extraction_door.name):
-		extractions[extraction_door.name] = 0
+	for coin in temp_collected_coins:
+		collected_coins.push_back(coin)
+	temp_collected_coins.clear()
 	
-	var max_amount: int = extraction_door.max_extraction - extractions[extraction_door.name]
-	var extracted_amount: int = mini(max_amount, temp_coins)
-	extractions[extraction_door.name] += extracted_amount
-	change_temp_coins(-extracted_amount)
-	change_extracted_coins(extracted_amount)
-	D.collected_coins.clear()
+	change_extracted_coins(temp_coins)
+	change_temp_coins(-temp_coins)
 	reset_energy()
 
 
@@ -66,9 +60,3 @@ func reset_energy() -> void:
 func change_curr_energy(amount: float) -> void:
 	player_curr_energy += amount
 	E.player_curr_energy_changed.emit()
-
-
-func get_extracted_door_coins(extraction_door: ExtractionDoor) -> int:
-	if not extractions.has(extraction_door.name):
-		return 0
-	return extractions[extraction_door.name]

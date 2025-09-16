@@ -610,11 +610,9 @@ script = ExtResource("1_2mthh")
 
 [node name="ExtractionDoor" parent="ExtractionDoors" instance=ExtResource("3_1fp7r")]
 position = Vector2(66, 40)
-max_extraction = 3
 
 [node name="ExtractionDoor2" parent="ExtractionDoors" instance=ExtResource("3_1fp7r")]
 position = Vector2(400, -32)
-max_extraction = 5
 
 [node name="Player" parent="." instance=ExtResource("3_v5dby")]
 position = Vector2(0, -213)

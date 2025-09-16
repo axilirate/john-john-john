@@ -16,6 +16,7 @@ atlas = ExtResource("1_wck03")
 region = Rect2(22, 0, 22, 11)
 
 [node name="ExtractionDoor" type="Area2D" node_paths=PackedStringArray("wall_sprite_left", "wall_sprite_right", "door_sprite")]
+modulate = Color(0.372549, 0.372549, 0.372549, 1)
 script = ExtResource("1_gpqa8")
 wall_sprite_left = NodePath("WallSpriteLeft")
 wall_sprite_right = NodePath("WallSpriteRight")

@@ -18,15 +18,7 @@ var node_ref: Node2D
 
 func _ready() -> void:
 	E.player_entered_extraction_door_area.connect(func(player: Player, extraction_door: ExtractionDoor):
-		if not extraction_door.can_extract():
-			return
-		
 		name_text = "Press \"E\" to extract"
-		name_text += "\n"
-		name_text += "Extracted: "
-		name_text += str(D.get_extracted_door_coins(extraction_door))
-		name_text += "/"
-		name_text += str(extraction_door.max_extraction)
 		description_text = ""
 		cost = 0
 		update()

@@ -43,9 +43,6 @@ func _input(event: InputEvent) -> void:
 			else:
 				continue
 			
-			if not area.can_extract():
-				return
-			
 			area.show_wall(global_position)
 			extract(area.global_position)
 			D.extract(area)
@@ -84,8 +81,7 @@ func add_state(state: State) -> void:
 
 
 func die() -> void:
-	D.coin_bag_to_spawn_position = global_position
-	D.coin_bag_to_spawn_coins = D.temp_coins
+	D.temp_collected_coins.clear()
 	animation_tree.active = false
 	animation_player.play("die")
 	add_state(State.DEAD)
@@ -256,10 +252,6 @@ func _on_interaction_area_area_entered(area: Area2D) -> void:
 		E.player_entered_extraction_door_area.emit(self, area)
 	
 	if area is Coin:
-		D.collected_coins.push_back(area.name)
+		D.temp_collected_coins.push_back(area.name)
 		D.change_temp_coins(1)
 		area.collect()
-	
-	if area is CoinBag:
-		area.collect()
-		D.change_temp_coins(area.coins)
