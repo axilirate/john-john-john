@@ -24,10 +24,6 @@ var animating: bool = false
 
 func _ready() -> void:
 	E.restart_button_pressed.connect(func(): die())
-	interaction_area.area_exited.connect(func(area: Area2D):
-		if area is ExtractionDoor:
-			E.player_exited_extraction_door_area.emit(self, area)
-		)
 
 
 
@@ -37,18 +33,17 @@ func _input(event: InputEvent) -> void:
 			return
 		
 		for area in interaction_area.get_overlapping_areas():
-			var extraction_door: ExtractionDoor
+			
 			if area is ExtractionDoor:
-				extraction_door = area as ExtractionDoor
-			else:
-				continue
+				area.show_wall(global_position)
+				extract(area.global_position)
+				D.extract(area)
+				
+				E.player_extracted.emit(self)
 			
-			area.show_wall(global_position)
-			extract(area.global_position)
-			D.extract(area)
-			
-			E.player_extracted.emit(self)
-
+			if area is SkillBook:
+				D.temp_collected_things.push_back(area.name)
+				area.learn()
 
 
 
@@ -81,7 +76,7 @@ func add_state(state: State) -> void:
 
 
 func die() -> void:
-	D.temp_collected_coins.clear()
+	D.temp_collected_things.clear()
 	animation_tree.active = false
 	animation_player.play("die")
 	add_state(State.DEAD)
@@ -251,7 +246,18 @@ func _on_interaction_area_area_entered(area: Area2D) -> void:
 	if area is ExtractionDoor:
 		E.player_entered_extraction_door_area.emit(self, area)
 	
+	if area is SkillBook:
+		E.player_entered_skill_book_area.emit(self, area)
+	
 	if area is Coin:
-		D.temp_collected_coins.push_back(area.name)
+		D.temp_collected_things.push_back(area.name)
 		D.change_temp_coins(1)
 		area.collect()
+
+
+func _on_interaction_area_area_exited(area: Area2D) -> void:
+	if area is ExtractionDoor:
+		E.player_exited_extraction_door_area.emit(self, area)
+	
+	if area is SkillBook:
+		E.player_exited_skill_book_area.emit(self, area)

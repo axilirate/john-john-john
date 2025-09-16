@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bd1vhebhrer4x"]
+[gd_scene load_steps=6 format=3 uid="uid://bd1vhebhrer4x"]
 
 [ext_resource type="PackedScene" uid="uid://bndn645ce51vk" path="res://scenes/skill_node/skill_node.tscn" id="1_7utke"]
 [ext_resource type="Script" uid="uid://ciw4vl52gtmi2" path="res://scenes/skill_tree/skill_tree.gd" id="1_qyvaf"]
 [ext_resource type="Resource" uid="uid://buhibrx8u16j7" path="res://resources/skills/jump_higher.tres" id="3_ynme6"]
 [ext_resource type="Resource" uid="uid://dv0bayr6y3w3s" path="res://resources/skills/run_faster.tres" id="4_cppxt"]
+[ext_resource type="Resource" uid="uid://duxmpj1bc7pdv" path="res://resources/skills/dash.tres" id="5_sb1ul"]
 
 [node name="SkillTree" type="Node2D" node_paths=PackedStringArray("skill_connection_line_holder", "skill_node_holder")]
 script = ExtResource("1_qyvaf")
@@ -22,4 +23,9 @@ cost = 3
 position = Vector2(61, 0)
 resource = ExtResource("4_cppxt")
 dependency = NodePath("../SkillNode")
-cost = 5
+cost = 2
+
+[node name="SkillNode3" parent="SkillNodeHolder" instance=ExtResource("1_7utke")]
+position = Vector2(-88, 0)
+resource = ExtResource("5_sb1ul")
+cost = -1

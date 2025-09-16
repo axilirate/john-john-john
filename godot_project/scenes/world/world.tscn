@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://cks5b4mtsm7ju"]
+[gd_scene load_steps=11 format=4 uid="uid://cks5b4mtsm7ju"]
 
 [ext_resource type="Script" uid="uid://bfgraux67qale" path="res://scenes/world/world.gd" id="1_2mthh"]
 [ext_resource type="PackedScene" uid="uid://cmywky72r313k" path="res://scenes/extraction_door/extraction_door.tscn" id="3_1fp7r"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cqil1lp8wh1hc" path="res://scenes/coin/coin.tscn" id="4_6m72w"]
 [ext_resource type="Texture2D" uid="uid://8joyvm1w8cgn" path="res://assets/textures/tiles.png" id="4_vnxpq"]
 [ext_resource type="PackedScene" uid="uid://bsrtejq5u3bcf" path="res://scenes/spikes/spikes.tscn" id="6_t5ptc"]
+[ext_resource type="PackedScene" uid="uid://c82hhja25f6sg" path="res://scenes/skill_book/skill_book.tscn" id="7_bq33v"]
+[ext_resource type="Resource" uid="uid://duxmpj1bc7pdv" path="res://resources/skills/dash.tres" id="8_j2gmx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_poo1t"]
 texture = ExtResource("4_vnxpq")
@@ -613,6 +615,12 @@ position = Vector2(66, 40)
 
 [node name="ExtractionDoor2" parent="ExtractionDoors" instance=ExtResource("3_1fp7r")]
 position = Vector2(400, -32)
+
+[node name="SkillBooks" type="Node2D" parent="."]
+
+[node name="SkillBook" parent="SkillBooks" instance=ExtResource("7_bq33v")]
+position = Vector2(92, -16)
+skill_resource = ExtResource("8_j2gmx")
 
 [node name="Player" parent="." instance=ExtResource("3_v5dby")]
 position = Vector2(0, -213)

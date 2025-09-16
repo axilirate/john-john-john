@@ -19,6 +19,7 @@ var node_ref: Node2D
 func _ready() -> void:
 	E.player_entered_extraction_door_area.connect(func(player: Player, extraction_door: ExtractionDoor):
 		name_text = "Press \"E\" to extract"
+		name_label.modulate = Color("5f5f5f")
 		description_text = ""
 		cost = 0
 		update()
@@ -30,7 +31,27 @@ func _ready() -> void:
 		hide_from_node(extraction_door)
 		)
 	
+	
+	E.player_entered_skill_book_area.connect(func(player: Player, skill_book: SkillBook):
+		if not is_instance_valid(skill_book.skill_resource):
+			return
+		
+		name_text = "Press \"E\" to learn " + skill_book.skill_resource.name
+		name_label.modulate = skill_book.skill_resource.color
+		description_text = ""
+		cost = 0
+		update()
+		
+		show_from_node(skill_book)
+		)
+	
+	E.player_exited_skill_book_area.connect(func(player: Player, skill_book: SkillBook):
+		hide_from_node(skill_book)
+		)
+	
+	
 	E.skill_node_mouse_entered.connect(func(skill_node: SkillNode):
+		name_label.modulate = Color.WHITE
 		update_from_skill_node(skill_node)
 		show_from_node(skill_node)
 		)

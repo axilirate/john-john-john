@@ -14,13 +14,15 @@ var hovering: bool = false
 
 
 func _ready() -> void:
+	if not is_instance_valid(resource):
+		return
+	
 	E.skill_node_unlocked.connect(func():
 		if D.unlocked_skill_nodes.has(name):
 			border_sprite.modulate = resource.color
 		)
 	
-	if is_instance_valid(resource):
-		icon_sprite.texture = resource.icon
+	icon_sprite.texture = resource.icon
 	hover_sprite.hide()
 
 

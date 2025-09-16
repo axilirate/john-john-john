@@ -5,8 +5,9 @@ var active_skills: Array[SkillResource] = []
 var extracted_coins: int = 0
 var temp_coins: int = 0
 
-var temp_collected_coins: Array[StringName] = []
-var collected_coins: Array[StringName] = []
+# World
+var temp_collected_things: Array[StringName] = []
+var collected_things: Array[StringName] = []
 
 
 # Player
@@ -20,9 +21,9 @@ var player_speed: float = 25.0
 
 
 func extract(extraction_door: ExtractionDoor) -> void:
-	for coin in temp_collected_coins:
-		collected_coins.push_back(coin)
-	temp_collected_coins.clear()
+	for coin in temp_collected_things:
+		collected_things.push_back(coin)
+	temp_collected_things.clear()
 	
 	change_extracted_coins(temp_coins)
 	change_temp_coins(-temp_coins)

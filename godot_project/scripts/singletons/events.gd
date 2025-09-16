@@ -10,6 +10,8 @@ signal restart_button_pressed
 # Player
 signal player_entered_extraction_door_area(player: Player, extraction_door: ExtractionDoor)
 signal player_exited_extraction_door_area(player: Player, extraction_door: ExtractionDoor)
+signal player_entered_skill_book_area(player: Player, skill_book: SkillBook)
+signal player_exited_skill_book_area(player: Player, extraction_door: SkillBook)
 signal player_extracted(player: Player)
 signal player_died(player: Player)
 signal player_curr_energy_changed

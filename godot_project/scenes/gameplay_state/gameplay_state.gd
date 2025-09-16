@@ -40,4 +40,6 @@ func unlock_skill(skill_node: SkillNode) -> void:
 
 
 func can_unlock(skill_node: SkillNode) -> bool:
+	if D.unlocked_skill_nodes.has(skill_node.name):
+		return false
 	return skill_node.cost <= D.extracted_coins

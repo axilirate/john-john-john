@@ -6,7 +6,7 @@ class_name Coin extends Area2D
 
 
 func _ready() -> void:
-	if D.collected_coins.has(self.name):
+	if D.collected_things.has(self.name):
 		hide()
 		queue_free()
 
