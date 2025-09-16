@@ -2,8 +2,17 @@ class_name Player extends CharacterBody2D
 
 enum State {
 	HARD_FALL,
+	DASH,
 	DEAD,
 	}
+
+enum Cooldown {
+	GHOST_TRAIL,
+	DASH,
+}
+
+const DASH_DURATION: float = 0.15
+const DASH_FORCE: float = 245.0
 
 
 @export_group("Nodes")
@@ -13,17 +22,22 @@ enum State {
 @export var sprite: Sprite2D
 
 
+var dash_direction: Vector2 = Vector2.ZERO
 var last_input: Vector2 = get_input()
 var coyote_time: float = 0.1
 
+var dash_time: float = 0.0
 var air_time: float = 0.0
 
+var cooldowns: Dictionary[Cooldown, float] = {}
 var states: Array[State] = []
 var animating: bool = false
 
 
 func _ready() -> void:
 	E.restart_button_pressed.connect(func(): die())
+	for idx in Cooldown.size():
+		cooldowns[idx] = 0.0
 
 
 
@@ -44,6 +58,10 @@ func _input(event: InputEvent) -> void:
 			if area is SkillBook:
 				D.temp_collected_things.push_back(area.name)
 				area.learn()
+	
+	if event.is_action_pressed("dash"):
+		try_to_dash()
+
 
 
 
@@ -53,6 +71,7 @@ func _physics_process(delta: float) -> void:
 		
 	if not animating:
 		process_last_input.call_deferred()
+		process_cooldowns(delta)
 		process_energy(delta)
 		
 		process_air_time(delta)
@@ -75,6 +94,8 @@ func add_state(state: State) -> void:
 	states.push_back(state)
 
 
+
+
 func die() -> void:
 	D.temp_collected_things.clear()
 	animation_tree.active = false
@@ -90,6 +111,10 @@ func process_last_input() -> void:
 	last_input = get_input()
 
 
+
+func process_cooldowns(delta: float) -> void:
+	for cd in cooldowns:
+		cooldowns[cd] = maxf(0.0, cooldowns[cd] - delta)
 
 
 func process_energy(delta: float) -> void:
@@ -119,6 +144,8 @@ func process_hard_fall() -> void:
 func process_visuals() -> void:
 	process_animation_tree()
 	process_sprite()
+	
+	process_ghost_trail()
 
 
 
@@ -126,6 +153,7 @@ func process_velocity(delta) -> void:
 	process_horizontal_movement()
 	process_gravity()
 	process_jump(delta)
+	process_dash(delta)
 
 
 
@@ -138,7 +166,7 @@ func process_gravity() -> void:
 
 
 
-func process_jump(delta) -> void:
+func process_jump(delta: float) -> void:
 	var input: Vector2 = get_input()
 	
 	if air_time < coyote_time and just_pressed_jump():
@@ -150,6 +178,32 @@ func process_jump(delta) -> void:
 
 
 
+
+func process_dash(delta: float) -> void:
+	if not states.has(State.DASH):
+		return
+	
+	velocity = (dash_direction * DASH_FORCE) / pow(1.0 + dash_time, 10)
+	dash_time += delta
+	
+	if dash_time >= DASH_DURATION:
+		states.erase(State.DASH)
+
+
+func try_to_dash() -> void:
+	if cooldowns[Cooldown.DASH] > 0.0:
+		return
+	
+	dash_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	cooldowns[Cooldown.DASH] = D.player_dash_cd
+	add_state(State.DASH)
+	dash_time = 0.0
+
+
+
+
+
+
 func process_collision(collision: KinematicCollision2D) -> void:
 	if not is_instance_valid(collision):
 		return
@@ -158,9 +212,15 @@ func process_collision(collision: KinematicCollision2D) -> void:
 		die()
 
 
+
 func process_horizontal_movement() -> void:
 	var input: Vector2 = get_input()
 	velocity.x = input.x * D.player_speed
+
+
+
+
+
 
 
 
@@ -197,6 +257,10 @@ func process_animation_tree() -> void:
 	
 	var is_running: bool = not is_equal_approx(velocity.x, 0.0) and not get_input().x == 0
 	var run_time_scale: float = abs(velocity.x) / 34.0
+	var is_in_air: bool = not is_on_floor()
+	if states.has(State.DASH):
+		is_in_air = true
+	
 	#if not animation_tree["parameters/air_jump_one_shot/active"]:
 		#animation_tree["parameters/air_jump_blend/blend_amount"] = int(flipped)
 	
@@ -204,11 +268,32 @@ func process_animation_tree() -> void:
 		run_time_scale = 0.85
 		is_running = true
 	
-	animation_tree["parameters/air_blend/blend_amount"] = int(not is_on_floor())
 	animation_tree["parameters/run_blend/blend_amount"] = int(is_running)
+	animation_tree["parameters/air_blend/blend_amount"] = int(is_in_air)
 	
 	
 	animation_tree["parameters/run_time_scale/scale"] = run_time_scale
+
+
+
+func process_ghost_trail() -> void:
+	if not states.has(State.DASH):
+		return
+	
+	if cooldowns[Cooldown.GHOST_TRAIL] > 0.0:
+		return
+	cooldowns[Cooldown.GHOST_TRAIL] = 0.045
+	
+	var ghost_trail: Sprite2D = sprite.duplicate()
+	ghost_trail.set_script(preload("res://scripts/nodes/ghost_trail.gd"))
+	ghost_trail = ghost_trail as GhostTrail
+	ghost_trail.global_position = sprite.global_position
+	ghost_trail.top_level = true
+	await get_tree().create_timer(0.03).timeout
+	add_child(ghost_trail)
+	ghost_trail.z_index = -1
+	ghost_trail.init()
+
 
 
 
@@ -217,6 +302,8 @@ func just_pressed_jump() -> bool:
 
 func just_released_jump() -> bool:
 	return last_input.y > 0 and get_input().y <= 0
+
+
 
 
 
@@ -235,11 +322,14 @@ func extract(area_position: Vector2) -> void:
 
 
 
+
 func get_input() -> Vector2:
 	var x: int = int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
 	var y: int = int(Input.is_action_pressed("jump"))
 	
 	return Vector2(x, y)
+
+
 
 
 func _on_interaction_area_area_entered(area: Area2D) -> void:
@@ -253,6 +343,7 @@ func _on_interaction_area_area_entered(area: Area2D) -> void:
 		D.temp_collected_things.push_back(area.name)
 		D.change_temp_coins(1)
 		area.collect()
+
 
 
 func _on_interaction_area_area_exited(area: Area2D) -> void:
