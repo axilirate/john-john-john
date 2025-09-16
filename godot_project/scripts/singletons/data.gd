@@ -16,7 +16,7 @@ var player_max_energy: float = B.T1_ENERGY_TIME * 3
 var player_curr_energy: float = player_max_energy
 
 var player_jump_power: float = 85.0
-var player_dash_cd: float = 1.0
+var player_dash_cd: float = 2.5
 var player_speed: float = 25.0
 
 

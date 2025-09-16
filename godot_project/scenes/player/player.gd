@@ -229,12 +229,13 @@ func process_horizontal_movement() -> void:
 
 
 
-func process_sprite(delta: float) -> void:
+func process_sprite(_delta: float) -> void:
 	var flipped: bool = sprite.flip_h
 	var color: Color = Color("ff980d")
 	
-	if states.has(State.DASH):
-		color = Skills.DASH.color
+	var delta_c: float = cooldowns[Cooldown.DASH] / D.player_dash_cd
+	color = lerp(color, Skills.DASH.color, delta_c)
+	
 	
 	if velocity.x > 0.0:
 		flipped = false
@@ -255,7 +256,7 @@ func process_sprite(delta: float) -> void:
 		Pixel.snap(sprite)
 	
 	sprite.flip_h = flipped
-	sprite.modulate = lerp(sprite.modulate, color, 25 * delta)
+	sprite.modulate = color
 	sprite.offset.x = 0
 
 
