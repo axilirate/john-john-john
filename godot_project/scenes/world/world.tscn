@@ -619,7 +619,7 @@ position = Vector2(400, -32)
 [node name="SkillBooks" type="Node2D" parent="."]
 
 [node name="SkillBook" parent="SkillBooks" instance=ExtResource("7_bq33v")]
-position = Vector2(92, -16)
+position = Vector2(84, -16)
 skill_resource = ExtResource("8_j2gmx")
 
 [node name="Player" parent="." instance=ExtResource("3_v5dby")]

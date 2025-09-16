@@ -19,6 +19,6 @@ func _ready() -> void:
 
 
 func learn() -> void:
-	D.active_skills.push_back(skill_resource)
+	D.temp_active_skills.push_back(skill_resource)
 	hide()
 	queue_free()

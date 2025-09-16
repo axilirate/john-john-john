@@ -1,6 +1,7 @@
 extends Node
 
 var unlocked_skill_nodes: Array[StringName] = []
+var temp_active_skills: Array[SkillResource] = []
 var active_skills: Array[SkillResource] = []
 var extracted_coins: int = 0
 var temp_coins: int = 0
@@ -22,9 +23,14 @@ var player_speed: float = 25.0
 
 
 func extract(extraction_door: ExtractionDoor) -> void:
-	for coin in temp_collected_things:
-		collected_things.push_back(coin)
+	for thing in temp_collected_things:
+		collected_things.push_back(thing)
+	
+	for skill in temp_active_skills:
+		active_skills.push_back(skill)
+	
 	temp_collected_things.clear()
+	temp_active_skills.clear()
 	
 	change_extracted_coins(temp_coins)
 	change_temp_coins(-temp_coins)
@@ -47,18 +53,28 @@ func change_temp_coins(amount: int) -> void:
 	temp_coins += amount
 	E.coins_changed.emit()
 
+
 func change_extracted_coins(amount: int) -> void:
 	D.extracted_coins += amount
 	E.coins_changed.emit()
+
 
 func reset_temp_coins() -> void:
 	temp_coins = 0
 	E.coins_changed.emit()
 
+
 func reset_energy() -> void:
 	player_curr_energy = player_max_energy
 	E.player_curr_energy_changed.emit()
 
+
 func change_curr_energy(amount: float) -> void:
 	player_curr_energy += amount
 	E.player_curr_energy_changed.emit()
+
+
+func has_active_skill(skill_resource: SkillResource) -> bool:
+	if temp_active_skills.has(skill_resource) or active_skills.has(skill_resource):
+		return true
+	return false

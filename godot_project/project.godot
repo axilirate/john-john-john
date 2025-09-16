@@ -20,6 +20,7 @@ boot_splash/bg_color=Color(0, 0, 0, 1)
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 E="*res://scripts/singletons/events.gd"
 D="*res://scripts/singletons/data.gd"
+Skills="*res://scripts/singletons/skills.gd"
 
 [display]
 

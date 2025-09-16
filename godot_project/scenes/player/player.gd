@@ -11,6 +11,7 @@ enum Cooldown {
 	DASH,
 }
 
+
 const DASH_DURATION: float = 0.15
 const DASH_FORCE: float = 245.0
 
@@ -83,7 +84,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 	
 	
-	process_visuals()
+	process_visuals(delta)
 
 
 
@@ -98,6 +99,7 @@ func add_state(state: State) -> void:
 
 func die() -> void:
 	D.temp_collected_things.clear()
+	D.temp_active_skills.clear()
 	animation_tree.active = false
 	animation_player.play("die")
 	add_state(State.DEAD)
@@ -141,9 +143,9 @@ func process_hard_fall() -> void:
 
 
 
-func process_visuals() -> void:
+func process_visuals(delta) -> void:
 	process_animation_tree()
-	process_sprite()
+	process_sprite(delta)
 	
 	process_ghost_trail()
 
@@ -191,6 +193,9 @@ func process_dash(delta: float) -> void:
 
 
 func try_to_dash() -> void:
+	if not D.has_active_skill(Skills.DASH):
+		return
+	
 	if cooldowns[Cooldown.DASH] > 0.0:
 		return
 	
@@ -224,8 +229,12 @@ func process_horizontal_movement() -> void:
 
 
 
-func process_sprite() -> void:
+func process_sprite(delta: float) -> void:
 	var flipped: bool = sprite.flip_h
+	var color: Color = Color("ff980d")
+	
+	if states.has(State.DASH):
+		color = Skills.DASH.color
 	
 	if velocity.x > 0.0:
 		flipped = false
@@ -246,6 +255,7 @@ func process_sprite() -> void:
 		Pixel.snap(sprite)
 	
 	sprite.flip_h = flipped
+	sprite.modulate = lerp(sprite.modulate, color, 25 * delta)
 	sprite.offset.x = 0
 
 
@@ -276,6 +286,7 @@ func process_animation_tree() -> void:
 
 
 
+
 func process_ghost_trail() -> void:
 	if not states.has(State.DASH):
 		return
@@ -288,11 +299,13 @@ func process_ghost_trail() -> void:
 	ghost_trail.set_script(preload("res://scripts/nodes/ghost_trail.gd"))
 	ghost_trail = ghost_trail as GhostTrail
 	ghost_trail.global_position = sprite.global_position
+	ghost_trail.scale = Vector2(0.9, 0.9)
 	ghost_trail.top_level = true
 	await get_tree().create_timer(0.03).timeout
 	add_child(ghost_trail)
 	ghost_trail.z_index = -1
 	ghost_trail.init()
+
 
 
 
