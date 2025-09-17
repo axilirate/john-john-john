@@ -17,7 +17,7 @@ var node_ref: Node2D
 
 
 func _ready() -> void:
-	E.player_entered_extraction_door_area.connect(func(player: Player, extraction_door: ExtractionDoor):
+	E.player_entered_extraction_door_area.connect(func(_player: Player, extraction_door: ExtractionDoor):
 		name_text = "Press \"E\" to extract"
 		name_label.modulate = Color("5f5f5f")
 		description_text = ""
@@ -27,12 +27,12 @@ func _ready() -> void:
 		show_from_node(extraction_door)
 		)
 	
-	E.player_exited_extraction_door_area.connect(func(player: Player, extraction_door: ExtractionDoor):
+	E.player_exited_extraction_door_area.connect(func(_player: Player, extraction_door: ExtractionDoor):
 		hide_from_node(extraction_door)
 		)
 	
 	
-	E.player_entered_skill_book_area.connect(func(player: Player, skill_book: SkillBook):
+	E.player_entered_skill_book_area.connect(func(_player: Player, skill_book: SkillBook):
 		if not is_instance_valid(skill_book.skill_resource):
 			return
 		
@@ -45,7 +45,7 @@ func _ready() -> void:
 		show_from_node(skill_book)
 		)
 	
-	E.player_exited_skill_book_area.connect(func(player: Player, skill_book: SkillBook):
+	E.player_exited_skill_book_area.connect(func(_player: Player, skill_book: SkillBook):
 		hide_from_node(skill_book)
 		)
 	
@@ -56,15 +56,14 @@ func _ready() -> void:
 		show_from_node(skill_node)
 		)
 	
-	E.skill_node_unlocked.connect(func():
-		update_from_skill_node(node_ref)
-		)
+	E.skill_node_unlocked.connect(func():update_from_skill_node(node_ref))
+	E.skill_node_locked.connect(func():update_from_skill_node(node_ref))
 	
 	E.skill_node_mouse_exited.connect(func(skill_node: SkillNode):
 		hide_from_node(skill_node)
 		)
 	
-	E.player_extracted.connect(func(player: Player):
+	E.player_extracted.connect(func(_player: Player):
 		node_ref = null
 		hide()
 		)

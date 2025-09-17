@@ -38,15 +38,46 @@ func extract(extraction_door: ExtractionDoor) -> void:
 
 
 
+
 func unlock_skill_node(skill_node: SkillNode) -> void:
 	if not unlocked_skill_nodes.has(skill_node.name):
 		unlocked_skill_nodes.push_back(skill_node.name)
 	active_skills.push_back(skill_node.resource)
 	
-	if is_instance_valid(skill_node.resource.upgrade_script):
-		skill_node.resource.upgrade_script.new()
+	player_jump_power += skill_node.resource.bonus_jump_power
+	player_speed += skill_node.resource.bonus_speed
+	
+	if not skill_node.cost == -1:
+		change_extracted_coins(-skill_node.cost)
 	
 	E.skill_node_unlocked.emit()
+
+
+
+
+func lock_skill_node(skill_node: SkillNode, emit: bool = true) -> void:
+	if not unlocked_skill_nodes.has(skill_node.name):
+		return
+	
+	unlocked_skill_nodes.erase(skill_node.name)
+	active_skills.erase(skill_node.resource)
+	
+	player_jump_power -= skill_node.resource.bonus_jump_power
+	player_speed -= skill_node.resource.bonus_speed
+	
+	if not skill_node.cost == -1:
+		change_extracted_coins(skill_node.cost)
+	
+	for child in skill_node.get_children():
+		if child is SkillNode:
+			lock_skill_node(child, false)
+	
+	if emit:
+		E.skill_node_locked.emit()
+
+
+
+
 
 
 func change_temp_coins(amount: int) -> void:

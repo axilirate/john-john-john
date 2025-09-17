@@ -17,8 +17,12 @@ func _ready() -> void:
 
 
 func _on_skill_node_pressed(skill_node: SkillNode) -> void:
+	if D.unlocked_skill_nodes.has(skill_node.name):
+		D.lock_skill_node(skill_node)
+		return
+	
 	if can_unlock(skill_node):
-		unlock_skill(skill_node)
+		D.unlock_skill_node(skill_node)
 
 
 func restart_world() -> void:
@@ -33,10 +37,6 @@ func restart_world() -> void:
 	move_child(world, 0)
 
 
-
-func unlock_skill(skill_node: SkillNode) -> void:
-	D.change_extracted_coins(-skill_node.cost)
-	D.unlock_skill_node(skill_node)
 
 
 func can_unlock(skill_node: SkillNode) -> bool:

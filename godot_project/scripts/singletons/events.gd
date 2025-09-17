@@ -2,6 +2,7 @@ extends Node
 
 # Data
 signal skill_node_unlocked
+signal skill_node_locked
 signal coins_changed
 
 # UI

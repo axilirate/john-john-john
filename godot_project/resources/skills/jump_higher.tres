@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="SkillResource" load_steps=4 format=3 uid="uid://buhibrx8u16j7"]
+[gd_resource type="Resource" script_class="SkillResource" load_steps=3 format=3 uid="uid://buhibrx8u16j7"]
 
 [ext_resource type="Texture2D" uid="uid://dmrcgqgmvm22o" path="res://assets/textures/skill_icons/jump_higher_icon.png" id="1_cakjn"]
 [ext_resource type="Script" uid="uid://l8iecota2crk" path="res://scripts/resources/skill_resource.gd" id="2_2ch7m"]
-[ext_resource type="Script" uid="uid://cnfp678x3fxmo" path="res://resources/skill_upgrade_scripts/jump_higher.gd" id="3_1ks50"]
 
 [resource]
 script = ExtResource("2_2ch7m")
@@ -10,5 +9,6 @@ name = &"Higher Jump"
 icon = ExtResource("1_cakjn")
 color = Color(8.66354e-06, 0.964713, 0.503016, 1)
 description = "Increases Jump Height"
-upgrade_script = ExtResource("3_1ks50")
+bonus_jump_power = 45.0
+bonus_speed = 0.0
 metadata/_custom_type_script = "uid://l8iecota2crk"

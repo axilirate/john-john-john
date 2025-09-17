@@ -7,7 +7,6 @@ class_name SkillNode extends Node2D
 @export var icon_sprite: Sprite2D
 
 @export var resource: SkillResource
-@export var dependency: SkillNode
 @export var cost: int
 
 var hovering: bool = false
@@ -17,13 +16,17 @@ func _ready() -> void:
 	if not is_instance_valid(resource):
 		return
 	
-	E.skill_node_unlocked.connect(func():
-		if D.unlocked_skill_nodes.has(name):
-			border_sprite.modulate = resource.color
-		)
+	E.skill_node_unlocked.connect(func():update())
+	E.skill_node_locked.connect(func(): update())
 	
 	icon_sprite.texture = resource.icon
 	hover_sprite.hide()
+
+
+func update() -> void:
+	border_sprite.modulate = Color("808080")
+	if D.unlocked_skill_nodes.has(name):
+		border_sprite.modulate = resource.color
 
 
 func _input(event: InputEvent) -> void:

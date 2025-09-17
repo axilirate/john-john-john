@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="SkillResource" load_steps=4 format=3 uid="uid://dv0bayr6y3w3s"]
+[gd_resource type="Resource" script_class="SkillResource" load_steps=3 format=3 uid="uid://dv0bayr6y3w3s"]
 
 [ext_resource type="Script" uid="uid://l8iecota2crk" path="res://scripts/resources/skill_resource.gd" id="1_6qpoe"]
 [ext_resource type="Texture2D" uid="uid://ycywggv2e2ur" path="res://assets/textures/skill_icons/run_faster_icon.png" id="1_ptmje"]
-[ext_resource type="Script" uid="uid://lu675mllfw6a" path="res://resources/skill_upgrade_scripts/run_faster.gd" id="3_lbn6s"]
 
 [resource]
 script = ExtResource("1_6qpoe")
@@ -10,5 +9,6 @@ name = &"Run Faster"
 icon = ExtResource("1_ptmje")
 color = Color(0.317704, 0.579479, 1, 1)
 description = "Increases movement speed"
-upgrade_script = ExtResource("3_lbn6s")
+bonus_jump_power = 0.0
+bonus_speed = 10.0
 metadata/_custom_type_script = "uid://l8iecota2crk"
