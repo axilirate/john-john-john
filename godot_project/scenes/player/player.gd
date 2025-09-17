@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class_name Player extends CharacterBody2D
 
 enum State {
@@ -64,10 +65,29 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("dash"):
 		try_to_dash()
 
+=======
+class_name Player extends CharacterController
+
+
+@onready var animation_tree: AnimationTree = %AnimationTree
+
+@export_category("Nodes")
+@export var sprite: Sprite2D
+
+
+var flipped: bool = false
+
+
+
+func _ready() -> void:
+	super._ready()
+	_process_ghost_trail()
+>>>>>>> parent of d130758 (cleanup)
 
 
 
 func _physics_process(delta: float) -> void:
+<<<<<<< HEAD
 	if states.has(State.DEAD):
 		return
 		
@@ -88,10 +108,18 @@ func _physics_process(delta: float) -> void:
 	
 	
 	process_visuals(delta)
+=======
+	super._physics_process(delta)
+	_process_animation_blends()
+	
+	_process_look_dir()
+	_process_sprite()
+>>>>>>> parent of d130758 (cleanup)
 
 
 
 
+<<<<<<< HEAD
 func add_state(state: State) -> void:
 	if states.has(state):
 		return
@@ -244,31 +272,54 @@ func process_sprite(_delta: float) -> void:
 	color = lerp(color, Skills.DASH.color, delta_c)
 	
 	
+=======
+func _process_look_dir() -> void:
+>>>>>>> parent of d130758 (cleanup)
 	if velocity.x > 0.0:
 		flipped = false
 	
 	if velocity.x < 0.0:
 		flipped = true
 	
+<<<<<<< HEAD
 	#if is_on_wall() and air_time.current > 0.1:
 		#var normal: Vector2 = get_wall_normal()
 		#flipped = normal.x == -1
 	
+=======
+	
+	if is_on_wall() and air_time.current > 0.1:
+		var normal: Vector2 = get_wall_normal()
+		flipped = normal.x == -1
+
+
+
+
+func _process_sprite() -> void:
+>>>>>>> parent of d130758 (cleanup)
 	sprite.global_position = global_position + Vector2(0.0, -3.5)
 	
 	if is_on_floor():
 		sprite.global_position.y = round(sprite.global_position.y) + 0.5
 	
+<<<<<<< HEAD
 	if is_equal_approx(velocity.x, 0.0) and not animating:
 		Pixel.snap(sprite)
 	
 	sprite.flip_h = flipped
 	sprite.modulate = color
+=======
+	if is_equal_approx(velocity.x, 0.0):
+		sprite.global_position.x = round(sprite.global_position.x)
+	
+	sprite.flip_h = flipped
+>>>>>>> parent of d130758 (cleanup)
 	sprite.offset.x = 0
 
 
 
 
+<<<<<<< HEAD
 func process_animation_tree() -> void:
 	if not is_instance_valid(animation_tree):
 		return
@@ -375,3 +426,37 @@ func _on_interaction_area_area_exited(area: Area2D) -> void:
 	
 	if area is SkillBook:
 		E.player_exited_skill_book_area.emit(self, area)
+=======
+func _process_ghost_trail() -> void:
+	while true:
+		
+		await get_tree().create_timer(0.025).timeout
+		if not is_dashing:
+			continue
+		
+		var ghost_trail: Sprite2D = sprite.duplicate()
+		ghost_trail.set_script(preload("res://scripts/nodes/ghost_trail.gd"))
+		ghost_trail = ghost_trail as GhostTrail
+		ghost_trail.global_position = sprite.global_position
+		ghost_trail.top_level = true
+		add_child(ghost_trail)
+		ghost_trail.z_index = -1
+		ghost_trail.init()
+
+
+
+
+func _process_animation_blends() -> void:
+	var is_running: bool = not is_equal_approx(velocity.x, 0.0) and not get_horizontal_input() == 0
+	
+	if not animation_tree["parameters/air_jump_one_shot/active"]:
+		animation_tree["parameters/air_jump_blend/blend_amount"] = int(flipped)
+	
+	animation_tree["parameters/air_blend/blend_amount"] = int(not is_on_floor())
+	animation_tree["parameters/run_blend/blend_amount"] = int(is_running)
+
+
+func _on_jumped(jump_type: CharacterController.JumpType) -> void:
+	match jump_type:
+		CharacterController.JumpType.AIR: animation_tree["parameters/air_jump_one_shot/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+>>>>>>> parent of d130758 (cleanup)
