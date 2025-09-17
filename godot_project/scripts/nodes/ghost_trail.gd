@@ -17,12 +17,12 @@ func init() -> void:
 
 
 func _process(delta: float) -> void:
-	var scale_change: Vector2 = Vector2(delta, delta) * 15
-	if alpha < 0.75:
-		scale_change *= Vector2(delta, delta) * -5
-	
-	scale += scale_change
-	scale = scale.clamp(Vector2(0.25, 0.25), Vector2.ONE)
+	#var scale_change: Vector2 = Vector2(delta, delta) * 15
+	#if alpha < 0.75:
+		#scale_change *= Vector2(delta, delta) * -5
+	#
+	##scale += scale_change
+	##scale = scale.clamp(Vector2(0.25, 0.25), Vector2.ONE)
 	alpha -= delta
 	
 	material.set_shader_parameter("alpha", alpha)

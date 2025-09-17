@@ -1,4 +1,4 @@
-class_name Worm extends CharacterBody2D
+class_name Worm extends Enemy
 
 @export var ground_detection_area: Area2D
 @export var body_line: Line2D
@@ -12,11 +12,10 @@ class_name Worm extends CharacterBody2D
 var sprites: Array[Sprite2D] = []
 
 var acceleration: float = 0.01
-var gravity: float = 4.5
+var gravity: float = 2.5
 var speed: float = 125.0
 
 var target_dir: Vector2
-
 
 
 func _ready() -> void:
@@ -41,9 +40,6 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if World.player == null:
-		return
-	
 	_process_velocity(delta)
 	
 	move_and_slide()
@@ -71,17 +67,20 @@ func _process_body_line() -> void:
 
 
 func _process_velocity(delta: float) -> void:
+	if not is_instance_valid(player):
+		return
+	
+	var control: float = max(45, global_position.distance_to(player.global_position))
 	if not in_ground:
 		velocity.y += gravity
 		velocity.y = min(125, velocity.y)
-		target_dir = velocity.normalized()
-		return
+		control = 10
 	
 	
-	var new_target_dir: Vector2 = global_position.direction_to(World.player.global_position)
+	var new_target_dir: Vector2 = global_position.direction_to(player.global_position)
 	target_dir = target_dir.lerp(new_target_dir, delta * 10).normalized()
 	
-	velocity = target_dir * speed
+	velocity = velocity.move_toward(target_dir * speed, delta * control)
 
 
 
