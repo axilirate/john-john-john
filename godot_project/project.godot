@@ -11,9 +11,11 @@ config_version=5
 [application]
 
 config/name="John John John"
+config/description="No Description"
 run/main_scene="uid://d3jevj3fmoe2y"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
+config/icon="res://icon.png"
 
 [autoload]
 
@@ -21,6 +23,10 @@ BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 E="*res://scripts/singletons/events.gd"
 D="*res://scripts/singletons/data.gd"
 Skills="*res://scripts/singletons/skills.gd"
+
+[debug]
+
+gdscript/warnings/unused_signal=0
 
 [display]
 

@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bd1vhebhrer4x"]
+[gd_scene load_steps=7 format=3 uid="uid://bd1vhebhrer4x"]
 
 [ext_resource type="PackedScene" uid="uid://bndn645ce51vk" path="res://scenes/skill_node/skill_node.tscn" id="1_7utke"]
 [ext_resource type="Script" uid="uid://ciw4vl52gtmi2" path="res://scenes/skill_tree/skill_tree.gd" id="1_qyvaf"]
+[ext_resource type="Resource" uid="uid://3y34pyfu17bt" path="res://resources/skills/skill_point.tres" id="3_mbf46"]
 [ext_resource type="Resource" uid="uid://buhibrx8u16j7" path="res://resources/skills/jump_higher.tres" id="3_ynme6"]
 [ext_resource type="Resource" uid="uid://dv0bayr6y3w3s" path="res://resources/skills/run_faster.tres" id="4_cppxt"]
 [ext_resource type="Resource" uid="uid://duxmpj1bc7pdv" path="res://resources/skills/dash.tres" id="5_sb1ul"]
@@ -15,16 +16,25 @@ skill_node_holder = NodePath("SkillNodeHolder")
 
 [node name="SkillNodeHolder" type="Node2D" parent="."]
 
-[node name="SkillNode" parent="SkillNodeHolder" instance=ExtResource("1_7utke")]
-resource = ExtResource("3_ynme6")
-cost = 3
+[node name="SkillPointNode" parent="SkillNodeHolder" instance=ExtResource("1_7utke")]
+resource = ExtResource("3_mbf46")
 
-[node name="SkillNode2" parent="SkillNodeHolder/SkillNode" instance=ExtResource("1_7utke")]
+[node name="SkillPointNode2" parent="SkillNodeHolder/SkillPointNode" instance=ExtResource("1_7utke")]
+position = Vector2(0, -40)
+resource = ExtResource("3_mbf46")
+
+[node name="DashSkillNode" parent="SkillNodeHolder/SkillPointNode/SkillPointNode2" instance=ExtResource("1_7utke")]
+position = Vector2(-71, 0)
+resource = ExtResource("5_sb1ul")
+
+[node name="SkillPointNode3" parent="SkillNodeHolder/SkillPointNode/SkillPointNode2" instance=ExtResource("1_7utke")]
+position = Vector2(0, -38)
+resource = ExtResource("3_mbf46")
+
+[node name="SkillNode" parent="SkillNodeHolder/SkillPointNode" instance=ExtResource("1_7utke")]
+position = Vector2(61, 0)
+resource = ExtResource("3_ynme6")
+
+[node name="SkillNode2" parent="SkillNodeHolder/SkillPointNode/SkillNode" instance=ExtResource("1_7utke")]
 position = Vector2(61, 0)
 resource = ExtResource("4_cppxt")
-cost = 2
-
-[node name="SkillNode3" parent="SkillNodeHolder" instance=ExtResource("1_7utke")]
-position = Vector2(-88, 0)
-resource = ExtResource("5_sb1ul")
-cost = -1

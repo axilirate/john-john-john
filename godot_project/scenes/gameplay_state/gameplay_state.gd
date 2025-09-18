@@ -40,6 +40,10 @@ func restart_world() -> void:
 
 
 func can_unlock(skill_node: SkillNode) -> bool:
+	if skill_node.resource == Skills.SKILL_POINT:
+		return D.extracted_coins >= D.get_skill_point_price()
+	
 	if D.unlocked_skill_nodes.has(skill_node.name):
 		return false
-	return skill_node.cost <= D.extracted_coins
+	
+	return D.skill_points > 0

@@ -1,14 +1,12 @@
 extends Node
 
 var unlocked_skill_nodes: Array[StringName] = []
-var temp_active_skills: Array[SkillResource] = []
 var active_skills: Array[SkillResource] = []
 var extracted_coins: int = 0
 var temp_coins: int = 0
 
-# World
-var temp_collected_things: Array[StringName] = []
-var collected_things: Array[StringName] = []
+var unlocked_skill_points: int = 0
+var skill_points: int = 0
 
 
 # Player
@@ -23,16 +21,7 @@ var player_speed: float = 25.0
 
 
 func extract(extraction_door: ExtractionDoor) -> void:
-	for thing in temp_collected_things:
-		collected_things.push_back(thing)
-	
-	for skill in temp_active_skills:
-		active_skills.push_back(skill)
-	
-	temp_collected_things.clear()
-	temp_active_skills.clear()
-	
-	change_extracted_coins(temp_coins)
+	change_extracted_coins(temp_coins * extraction_door.extraction_multiplier)
 	change_temp_coins(-temp_coins)
 	reset_energy()
 
@@ -42,13 +31,20 @@ func extract(extraction_door: ExtractionDoor) -> void:
 func unlock_skill_node(skill_node: SkillNode) -> void:
 	if not unlocked_skill_nodes.has(skill_node.name):
 		unlocked_skill_nodes.push_back(skill_node.name)
-	active_skills.push_back(skill_node.resource)
+	
+	
+	if skill_node.resource == Skills.SKILL_POINT:
+		change_extracted_coins(-get_skill_point_price())
+		unlocked_skill_points += 1
+		change_skill_points(1)
+		E.skill_node_unlocked.emit()
+		return
+	
 	
 	player_jump_power += skill_node.resource.bonus_jump_power
 	player_speed += skill_node.resource.bonus_speed
-	
-	if not skill_node.cost == -1:
-		change_extracted_coins(-skill_node.cost)
+	active_skills.push_back(skill_node.resource)
+	change_skill_points(-1)
 	
 	E.skill_node_unlocked.emit()
 
@@ -59,14 +55,15 @@ func lock_skill_node(skill_node: SkillNode, emit: bool = true) -> void:
 	if not unlocked_skill_nodes.has(skill_node.name):
 		return
 	
+	if skill_node.resource == Skills.SKILL_POINT:
+		return
+	
 	unlocked_skill_nodes.erase(skill_node.name)
 	active_skills.erase(skill_node.resource)
 	
 	player_jump_power -= skill_node.resource.bonus_jump_power
 	player_speed -= skill_node.resource.bonus_speed
-	
-	if not skill_node.cost == -1:
-		change_extracted_coins(skill_node.cost)
+	change_skill_points(1)
 	
 	for child in skill_node.get_children():
 		if child is SkillNode:
@@ -77,7 +74,9 @@ func lock_skill_node(skill_node: SkillNode, emit: bool = true) -> void:
 
 
 
-
+func change_skill_points(amount: int) -> void:
+	skill_points += amount
+	E.skill_points_changed.emit()
 
 
 func change_temp_coins(amount: int) -> void:
@@ -106,6 +105,9 @@ func change_curr_energy(amount: float) -> void:
 
 
 func has_active_skill(skill_resource: SkillResource) -> bool:
-	if temp_active_skills.has(skill_resource) or active_skills.has(skill_resource):
-		return true
-	return false
+	return active_skills.has(skill_resource)
+
+
+
+func get_skill_point_price() -> int:
+	return ceili(pow(3, 1 + (float(unlocked_skill_points) * 0.25)))

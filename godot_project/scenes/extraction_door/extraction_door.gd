@@ -5,9 +5,10 @@ class_name ExtractionDoor extends Area2D
 @export var wall_sprite_right: Sprite2D
 @export var door_sprite: Sprite2D
 
+@export var extraction_multiplier: int = 1
+
 
 func _ready() -> void:
-	var region_x: int = 11
 	wall_sprite_right.hide()
 	wall_sprite_left.hide()
 

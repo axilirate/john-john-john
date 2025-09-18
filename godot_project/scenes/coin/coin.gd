@@ -5,11 +5,6 @@ class_name Coin extends Area2D
 
 
 
-func _ready() -> void:
-	if D.collected_things.has(self.name):
-		hide()
-		queue_free()
-
 
 func collect() -> void:
 	var collection_time: float = 0.25

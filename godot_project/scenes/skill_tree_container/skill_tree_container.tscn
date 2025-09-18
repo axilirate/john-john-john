@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://njmeebysbhml"]
+[gd_scene load_steps=4 format=3 uid="uid://njmeebysbhml"]
 
 [ext_resource type="Script" uid="uid://dfamm763yjc7m" path="res://scenes/skill_tree_container/skill_tree_container.gd" id="1_m6058"]
 [ext_resource type="PackedScene" uid="uid://bd1vhebhrer4x" path="res://scenes/skill_tree/skill_tree.tscn" id="1_yompb"]
+[ext_resource type="PackedScene" uid="uid://de813hk7fvrdy" path="res://scenes/custom_label/custom_label.tscn" id="3_asy6i"]
 
-[node name="SkillTreeContainer" type="MarginContainer" node_paths=PackedStringArray("confirm_upgrades_button")]
+[node name="SkillTreeContainer" type="MarginContainer" node_paths=PackedStringArray("confirm_upgrades_button", "skill_points_label")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,6 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_m6058")
 confirm_upgrades_button = NodePath("MarginContainer/ConfirmUpgradesButton")
+skill_points_label = NodePath("MarginContainer/SkillPointsLabel")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 layout_mode = 2
@@ -22,7 +24,7 @@ own_world_3d = true
 handle_input_locally = false
 canvas_item_default_texture_filter = 3
 physics_object_picking = true
-size = Vector2i(1152, 648)
+size = Vector2i(1280, 720)
 render_target_update_mode = 4
 
 [node name="Camera2D" type="Camera2D" parent="SubViewportContainer/SubViewport"]
@@ -44,3 +46,12 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 48
 text = "CONFIRM"
+
+[node name="SkillPointsLabel" parent="MarginContainer" instance=ExtResource("3_asy6i")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 48
+text = "Skill Points: 0"
+shadow_color = Color(0, 0, 0, 1)
+default_font_size = 48

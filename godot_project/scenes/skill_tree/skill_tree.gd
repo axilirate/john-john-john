@@ -26,15 +26,7 @@ func update_skill_node(skill_node: SkillNode) -> void:
 		if child is SkillNode:
 			update_skill_node(child)
 	
-	var is_visible: bool = true
-	
-	if skill_node.cost == -1:
-		if D.active_skills.has(skill_node.resource) and not D.unlocked_skill_nodes.has(skill_node.name):
-			D.unlock_skill_node(skill_node)
-		is_visible =  D.active_skills.has(skill_node.resource)
-	
-	skill_node.visible = is_visible
-	
+	skill_node.show()
 	
 	if skill_node.get_parent() is SkillNode:
 		if not D.unlocked_skill_nodes.has(skill_node.get_parent().name):

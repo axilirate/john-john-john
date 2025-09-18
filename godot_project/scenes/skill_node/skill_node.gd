@@ -7,7 +7,6 @@ class_name SkillNode extends Node2D
 @export var icon_sprite: Sprite2D
 
 @export var resource: SkillResource
-@export var cost: int
 
 var hovering: bool = false
 

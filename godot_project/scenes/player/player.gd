@@ -62,10 +62,6 @@ func _input(event: InputEvent) -> void:
 				D.extract(area)
 				
 				E.player_extracted.emit(self)
-			
-			if area is SkillBook:
-				D.temp_collected_things.push_back(area.name)
-				area.learn()
 	
 	if event.is_action_pressed("dash"):
 		try_to_dash()
@@ -107,11 +103,10 @@ func add_state(state: State) -> void:
 
 
 func die() -> void:
-	D.temp_collected_things.clear()
-	D.temp_active_skills.clear()
 	animation_tree.active = false
 	animation_player.play("hit")
 	add_state(State.DEAD)
+	Pixel.snap(sprite)
 	E.player_died.emit(self)
 	
 	await animation_player.animation_finished
@@ -422,11 +417,7 @@ func _on_interaction_area_area_entered(area: Area2D) -> void:
 	if area is ExtractionDoor:
 		E.player_entered_extraction_door_area.emit(self, area)
 	
-	if area is SkillBook:
-		E.player_entered_skill_book_area.emit(self, area)
-	
 	if area is Coin:
-		D.temp_collected_things.push_back(area.name)
 		D.change_temp_coins(1)
 		area.collect()
 
@@ -435,9 +426,6 @@ func _on_interaction_area_area_entered(area: Area2D) -> void:
 func _on_interaction_area_area_exited(area: Area2D) -> void:
 	if area is ExtractionDoor:
 		E.player_exited_extraction_door_area.emit(self, area)
-	
-	if area is SkillBook:
-		E.player_exited_skill_book_area.emit(self, area)
 
 
 func _on_hit_box_body_entered(body: Node2D) -> void:

@@ -18,9 +18,10 @@ var node_ref: Node2D
 
 func _ready() -> void:
 	E.player_entered_extraction_door_area.connect(func(_player: Player, extraction_door: ExtractionDoor):
-		name_text = "Press \"E\" to extract"
-		name_label.modulate = Color("5f5f5f")
-		description_text = ""
+		name_text = "Coin Multiplier: x" + str(extraction_door.extraction_multiplier)
+		description_text = "Press \"E\" to extract"
+		description_label.modulate = Color("5f5f5f")
+		name_label.modulate = Color("ff980d")
 		cost = 0
 		update()
 		
@@ -31,23 +32,6 @@ func _ready() -> void:
 		hide_from_node(extraction_door)
 		)
 	
-	
-	E.player_entered_skill_book_area.connect(func(_player: Player, skill_book: SkillBook):
-		if not is_instance_valid(skill_book.skill_resource):
-			return
-		
-		name_text = "Press \"E\" to learn " + skill_book.skill_resource.name
-		name_label.modulate = skill_book.skill_resource.color
-		description_text = ""
-		cost = 0
-		update()
-		
-		show_from_node(skill_book)
-		)
-	
-	E.player_exited_skill_book_area.connect(func(_player: Player, skill_book: SkillBook):
-		hide_from_node(skill_book)
-		)
 	
 	
 	E.skill_node_mouse_entered.connect(func(skill_node: SkillNode):
@@ -81,8 +65,10 @@ func update_from_skill_node(skill_node: SkillNode) -> void:
 	name_text = skill_node.resource.name
 	description_text = skill_node.resource.description
 	cost = 0
+	
 	if not D.unlocked_skill_nodes.has(skill_node.name):
-		cost = skill_node.cost
+		if skill_node.resource == Skills.SKILL_POINT:
+			cost = D.get_skill_point_price()
 	
 	update()
 
