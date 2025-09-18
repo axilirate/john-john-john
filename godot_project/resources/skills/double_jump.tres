@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkillResource" load_steps=3 format=3 uid="uid://bcfo20gkkgcfq"]
+
+[ext_resource type="Script" uid="uid://l8iecota2crk" path="res://scripts/resources/skill_resource.gd" id="1_p5qvt"]
+[ext_resource type="Texture2D" uid="uid://dtuvip2b7hda2" path="res://assets/textures/skill_icons/double_jump.png" id="1_t7o84"]
+
+[resource]
+script = ExtResource("1_p5qvt")
+name = &"Double Jump"
+icon = ExtResource("1_t7o84")
+color = Color(0.31538567, 0.63702965, 0.7177574, 1)
+metadata/_custom_type_script = "uid://l8iecota2crk"

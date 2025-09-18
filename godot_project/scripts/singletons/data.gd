@@ -2,7 +2,7 @@ extends Node
 
 var unlocked_skill_nodes: Array[StringName] = []
 var active_skills: Array[SkillResource] = []
-var extracted_coins: int = 0
+var extracted_coins: int = 100
 var temp_coins: int = 0
 
 var unlocked_skill_points: int = 0
