@@ -1,10 +1,12 @@
 class_name Player extends CharacterBody2D
 
 enum State {
+	DOUBLE_JUMPED,
 	HARD_FALL,
 	DASH,
 	DEAD,
 	}
+
 
 enum Cooldown {
 	TAKE_DAMAGE,
@@ -15,8 +17,8 @@ enum Cooldown {
 
 const TAKE_DAMAGE_COOLDOWN: float = 1.0
 const TARGET_CONTROL: float = 750.0
-const DASH_DURATION: float = 0.15
-const DASH_FORCE: float = 175.0
+const DASH_DURATION: float = 0.1
+const DASH_FORCE: float = 145.0
 
 
 @export_group("Nodes")
@@ -32,15 +34,20 @@ var coyote_time: float = 0.1
 
 var control: float = TARGET_CONTROL
 var hit_stop_time: float = 0.0
+var was_on_floor: bool = false
 var dash_time: float = 0.0
 var air_time: float = 0.0
 
-var cooldowns: Dictionary[Cooldown, float] = {}
+
+var cooldowns: Dictionary[Cooldown, float] = {} 
 var states: Array[State] = []
 var animating: bool = false
 
+
 var last_ghost_trail_pos: Vector2 = Vector2.INF
 var color_tween: Tween = create_tween()
+
+
 
 func _ready() -> void:
 	E.restart_button_pressed.connect(func(): die())
@@ -156,6 +163,9 @@ func process_hard_fall() -> void:
 	if is_on_floor():
 		states.erase(State.HARD_FALL)
 	
+	if states.has(State.DASH):
+		return
+	
 	if velocity.y < 0 and just_released_jump():
 		add_state(State.HARD_FALL)
 
@@ -174,26 +184,48 @@ func process_velocity(delta) -> void:
 	process_gravity()
 	process_jump(delta)
 	process_dash(delta)
+	process_land()
 
 
 
 func process_gravity() -> void:
+	if states.has(State.DASH):
+		return
+	
 	velocity.y += World.gravity
 	
 	if is_on_floor() and cooldowns[Cooldown.TAKE_DAMAGE] == 0.0:
 		velocity.y = 0
 
 
+func process_land() -> void:
+	if not was_on_floor and is_on_floor():
+		states.erase(State.DOUBLE_JUMPED)
+	
+	was_on_floor = is_on_floor()
+
 
 func process_jump(delta: float) -> void:
-	var input: Vector2 = get_input()
+	if just_pressed_jump():
+		if air_time < coyote_time:
+			velocity.y -= D.player_jump_power
+		
+		if not is_on_floor() and not states.has(State.DOUBLE_JUMPED) and can_double_jump():
+			double_jump()
 	
-	if air_time < coyote_time and just_pressed_jump():
-		velocity.y -= D.player_jump_power
 	
 	if not is_equal_approx(velocity.y, 0.0):
 		if velocity.y < 0 and states.has(State.HARD_FALL):
 			velocity.y = lerp(velocity.y, 0.0, delta * 25)
+
+
+
+func double_jump() -> void:
+	velocity.y = 0
+	velocity.y -= D.player_jump_power
+	states.erase(State.HARD_FALL)
+	add_state(State.DOUBLE_JUMPED)
+	animation_tree["parameters/air_jump_one_shot/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 
 
 
@@ -202,11 +234,12 @@ func process_dash(delta: float) -> void:
 	if not states.has(State.DASH):
 		return
 	
-	velocity = (dash_direction * (DASH_FORCE + D.player_speed)) / pow(1.0 + dash_time, 10)
+	velocity = (dash_direction * (DASH_FORCE + D.player_speed))
 	dash_time += delta
 	
 	if dash_time >= DASH_DURATION:
 		states.erase(State.DASH)
+
 
 
 func try_to_dash() -> void:
@@ -216,12 +249,15 @@ func try_to_dash() -> void:
 	if cooldowns[Cooldown.DASH] > 0.0:
 		return
 	
+	
 	dash_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	cooldowns[Cooldown.TAKE_DAMAGE] = DASH_DURATION
 	cooldowns[Cooldown.DASH] = D.player_dash_cd
+	states.erase(State.HARD_FALL)
 	add_state(State.DASH)
+	hit_stop_time = 0.025
 	dash_time = 0.0
-	control = 0.0
+	
 	
 	color_tween.kill()
 	color_tween = create_tween()
@@ -293,8 +329,8 @@ func process_animation_tree() -> void:
 	if states.has(State.DASH):
 		is_in_air = true
 	
-	#if not animation_tree["parameters/air_jump_one_shot/active"]:
-		#animation_tree["parameters/air_jump_blend/blend_amount"] = int(flipped)
+	if not animation_tree["parameters/air_jump_one_shot/active"]:
+		animation_tree["parameters/air_jump_blend/blend_amount"] = int(sprite.flip_h)
 	
 	if animating:
 		run_time_scale = 0.85
@@ -319,7 +355,7 @@ func process_ghost_trail() -> void:
 	cooldowns[Cooldown.GHOST_TRAIL] = 0.025
 	
 	if not last_ghost_trail_pos == Vector2.INF:
-		if last_ghost_trail_pos.distance_to(sprite.global_position) < 10:
+		if last_ghost_trail_pos.distance_to(sprite.global_position) < 8.5:
 			return
 	
 	var ghost_trail: Sprite2D = sprite.duplicate()
@@ -410,6 +446,10 @@ func blink(duration: float) -> void:
 		elapsed += blink_time
 	sprite.visible = true  # restore
 
+
+
+func can_double_jump() -> bool:
+	return D.active_skills.has(Skills.DOUBLE_JUMP)
 
 
 

@@ -21,7 +21,7 @@ skill_node_holder = NodePath("SkillNodeHolder")
 resource = ExtResource("3_mbf46")
 
 [node name="SkillPointNode2" parent="SkillNodeHolder/SkillPointNode" instance=ExtResource("1_7utke")]
-position = Vector2(0, -40)
+position = Vector2(0, -50)
 resource = ExtResource("3_mbf46")
 
 [node name="DashSkillNode" parent="SkillNodeHolder/SkillPointNode/SkillPointNode2" instance=ExtResource("1_7utke")]
@@ -29,12 +29,16 @@ position = Vector2(-71, 0)
 resource = ExtResource("5_sb1ul")
 
 [node name="SkillPointNode3" parent="SkillNodeHolder/SkillPointNode/SkillPointNode2" instance=ExtResource("1_7utke")]
-position = Vector2(0, -38)
+position = Vector2(0, -59)
 resource = ExtResource("3_mbf46")
 
 [node name="DoubleJumpSkillPointNode" parent="SkillNodeHolder/SkillPointNode/SkillPointNode2/SkillPointNode3" instance=ExtResource("1_7utke")]
 position = Vector2(-71, 0)
 resource = ExtResource("5_ubrlb")
+
+[node name="SkillPointNode4" parent="SkillNodeHolder/SkillPointNode/SkillPointNode2/SkillPointNode3" instance=ExtResource("1_7utke")]
+position = Vector2(0, -50)
+resource = ExtResource("3_mbf46")
 
 [node name="SkillNode" parent="SkillNodeHolder/SkillPointNode" instance=ExtResource("1_7utke")]
 position = Vector2(61, 0)
